@@ -1,6 +1,9 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +32,8 @@ public class BreakfastScreen extends AppCompatActivity {
     // GUI Components
     private TextView textArray;
     private ImageView image;
+    private Bitmap bitmap;
+    private Bitmap resizedbitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +58,30 @@ public class BreakfastScreen extends AppCompatActivity {
                 tableRow = new TableRow(this);
                 tableRow.setId(product.getID() + 1);
                 tableRow.setBackgroundColor(Color.WHITE);
-                tableRow.setLayoutParams(new Toolbar.LayoutParams(100, 100));
+                tableRow.setLayoutParams(new Toolbar.LayoutParams(300, 300));
 
                 // Create content for tablerows
                 textArray = new TextView(this);
 
                 // Add image for each row
                 image = new ImageView(this);
-                image.setImageResource(R.mipmap.ic_launcher);
+                //image.setPadding(100, 100, 100, 100);
+
+                bitmap = BitmapFactory.decodeResource(getResources(), product.getImage());
+                int width=400;
+                int height=400;
+                resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+                image.setImageBitmap(resizedbitmap);
                 tableRow.addView(image);
 
                 textArray.setText(product.getName());
+                textArray.setTextSize(22);
+                textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
-                textArray.setPadding(100, 100, 100, 100);
+                textArray.setPadding(0, 150, 0, 100);
                 tableRow.addView(textArray);
 
-                tableLayout.addView(tableRow, new TableLayout.LayoutParams(100, 100));
+                tableLayout.addView(tableRow, new TableLayout.LayoutParams(200, 200));
             }
         }
     }

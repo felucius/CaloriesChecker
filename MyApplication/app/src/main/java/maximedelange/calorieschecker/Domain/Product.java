@@ -1,5 +1,7 @@
 package maximedelange.calorieschecker.Domain;
 
+import android.media.Image;
+
 /**
  * Created by M on 12/14/2016.
  */
@@ -12,14 +14,16 @@ public class Product {
     private int calories;
     private ProductType productType;
     private CategoryType categoryType;
+    private int image;
 
     // Constructor
-    public Product(String name, int calories, ProductType productType, CategoryType categoryType){
+    public Product(String name, int calories, ProductType productType, CategoryType categoryType, int image){
         setID(++count);
         this.name = name;
         this.calories = calories;
         this.productType = productType;
         this.categoryType = categoryType;
+        this.image = image;
     }
 
     // Methods
@@ -45,6 +49,10 @@ public class Product {
 
     public void setID(int ID){
         this.ID = ID;
+    }
+
+    public int getImage(){
+        return this.image;
     }
 
     @Override

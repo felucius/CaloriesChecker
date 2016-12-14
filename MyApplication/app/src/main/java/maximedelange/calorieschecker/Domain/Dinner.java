@@ -1,16 +1,16 @@
-package Domain;
+package maximedelange.calorieschecker.Domain;
 
 /**
  * Created by M on 12/13/2016.
  */
 
-public class Breakfast extends Category{
+public class Dinner extends Category{
 
     // Fields
     private boolean isHot;
 
     // Constructor
-    public Breakfast(String name, boolean isHot){
+    public Dinner(String name, boolean isHot){
         super(name);
         this.isHot = isHot;
     }

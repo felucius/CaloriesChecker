@@ -1,4 +1,4 @@
-package Domain;
+package maximedelange.calorieschecker.Domain;
 
 /**
  * Created by M on 12/13/2016.

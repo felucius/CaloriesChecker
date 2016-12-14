@@ -32,10 +32,6 @@ public class CategoryScreen extends AppCompatActivity {
         goToDinner();
     }
 
-    public void getCategories(){
-
-    }
-
     public void goToBreakfast(){
         lblBreakfast = (TextView)findViewById(R.id.lblBreakfastShow);
         lblBreakfast.setText("Breakfast");

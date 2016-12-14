@@ -1,11 +1,15 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
@@ -17,8 +21,11 @@ public class DinnerScreen extends AppCompatActivity {
 
     // Fields
     private ProductController productController;
+    private TableLayout tableLayout;
+    private TableRow tableRow;
     // GUI Components
-    private TextView lblProducts;
+    private TextView textArray;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +35,37 @@ public class DinnerScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         productController = new ProductController();
-        getDinnerProducts();
+
+        getTableLayoutDinnerProducts();
     }
 
-    public void getDinnerProducts(){
-        lblProducts = (TextView)findViewById(R.id.lblProductsShow);
-        for(Product product : productController.getProducts()){
+    public void getTableLayoutDinnerProducts() {
+        tableLayout = (TableLayout)findViewById(R.id.tableLayoutDinner);
+
+        // Creating a table row for each product in productController.
+        for (Product product : productController.getProducts()) {
             if(product.getCategoryType() == CategoryType.Dinner){
-                lblProducts.append(product.toString());
+
+                // Create tablerows
+                tableRow = new TableRow(this);
+                tableRow.setId(product.getID() + 1);
+                tableRow.setBackgroundColor(Color.WHITE);
+                tableRow.setLayoutParams(new Toolbar.LayoutParams(100, 100));
+
+                // Create content for tablerows
+                textArray = new TextView(this);
+
+                // Add image for each row
+                image = new ImageView(this);
+                image.setImageResource(R.mipmap.ic_launcher);
+                tableRow.addView(image);
+
+                textArray.setText(product.getName());
+                textArray.setTextColor(Color.BLACK);
+                textArray.setPadding(100, 100, 100, 100);
+                tableRow.addView(textArray);
+
+                tableLayout.addView(tableRow, new TableLayout.LayoutParams(100, 100));
             }
         }
     }

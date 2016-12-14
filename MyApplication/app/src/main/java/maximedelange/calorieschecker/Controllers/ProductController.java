@@ -30,6 +30,7 @@ public class ProductController {
 
     public ArrayList<Product> createProductData(){
         this.products = new ArrayList<>();
+
         products.add(new Product("Bruin bolletje", 100, ProductType.Bread, CategoryType.Breakfast));
         products.add(new Product("Wit bolletje", 120, ProductType.Bread, CategoryType.Breakfast));
         products.add(new Product("Bruin snee brood", 100, ProductType.Bread, CategoryType.Breakfast));
@@ -51,6 +52,10 @@ public class ProductController {
         products.add(new Product("Diepvries groente", 100, ProductType.Vegetables, CategoryType.Dinner));
         products.add(new Product("Tomaten", 100, ProductType.Vegetables, CategoryType.Dinner));
         products.add(new Product("Sla", 100, ProductType.Vegetables, CategoryType.Dinner));
+        products.add(new Product("Appel", 100, ProductType.Fruit, CategoryType.Lunch));
+        products.add(new Product("Banaan", 100, ProductType.Fruit, CategoryType.Lunch));
+        products.add(new Product("Mandarijn", 100, ProductType.Fruit, CategoryType.Lunch));
+        products.add(new Product("Kipfilet blokjes/heel", 100, ProductType.Chicken, CategoryType.Dinner));
 
         return products;
     }

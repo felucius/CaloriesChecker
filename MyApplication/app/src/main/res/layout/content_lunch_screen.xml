@@ -13,14 +13,40 @@
     tools:context="maximedelange.calorieschecker.Screens.LunchScreen"
     tools:showIn="@layout/activity_lunch_screen">
 
-    <TextView
-        android:text="..."
+    <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/lblProductsShow"
-        android:layout_height="400dp"
-        android:textSize="18sp"
-        android:textStyle="normal|bold" />
+        android:id="@+id/tableLayoutLunch"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -4,15 +4,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
@@ -20,14 +24,18 @@ import maximedelange.calorieschecker.R;
 public class LunchScreen extends AppCompatActivity {
 
     // Fields
-    private ProductController productController;
-    private TableLayout tableLayout;
-    private TableRow tableRow;
+    private ProductController productController = null;
+    private TableLayout tableLayout = null;
+    private TableRow tableRow = null;
+    private Bitmap bitmap = null;
+    private Bitmap resizedbitmap = null;
+    private CalorieCounter calorieCounter = null;
+    private boolean isClicked = false;
+
     // GUI Components
     private TextView textArray;
     private ImageView image;
-    private Bitmap bitmap;
-    private Bitmap resizedbitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +45,16 @@ public class LunchScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         productController = new ProductController();
+        calorieCounter = new CalorieCounter();
         getTableLayoutLunchProducts();
+        changeStatusBar(0);
     }
 
     public void getTableLayoutLunchProducts() {
         tableLayout = (TableLayout)findViewById(R.id.tableLayoutLunch);
 
         // Creating a table row for each product in productController.
-        for (Product product : productController.getProducts()) {
+        for (final Product product : productController.getProducts()) {
             if(product.getCategoryType() == CategoryType.Lunch){
 
                 // Create tablerows
@@ -74,9 +84,33 @@ public class LunchScreen extends AppCompatActivity {
                 textArray.setPadding(0, 150, 0, 100);
                 tableRow.addView(textArray);
 
+                tableRow.setOnClickListener(new View.OnClickListener() {
+                    int colorGreen = getResources().getColor(android.R.color.holo_green_light);
+                    int colorWhite = getResources().getColor(android.R.color.background_light);
+                    @Override
+                    public void onClick(View v) {
+                        if(!isClicked){
+                            v.setBackgroundColor(colorGreen);
+                            isClicked = true;
+
+                            calorieCounter.addCalories(product.getCalories());
+                            changeStatusBar(calorieCounter.getCountcalories());
+                        }
+                        else{
+                            v.setBackgroundColor(colorWhite);
+                            isClicked = false;
+                        }
+                    }
+                });
+
                 tableLayout.addView(tableRow, new TableLayout.LayoutParams(200, 200));
             }
         }
     }
 
+    public void changeStatusBar(int calories){
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Totaal calorieën " + calories);
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
+    }
 }

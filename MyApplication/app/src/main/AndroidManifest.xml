@@ -33,6 +33,10 @@
         <activity
             android:name=".Screens.DinnerScreen"
             android:label="@string/title_activity_dinner_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Screens.CaloriesListScreen"
+            android:label="@string/title_activity_calories_list_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

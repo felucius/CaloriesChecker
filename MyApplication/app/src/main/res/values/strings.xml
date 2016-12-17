@@ -5,4 +5,5 @@
     <string name="title_activity_breakfast_screen">BreakfastScreen</string>
     <string name="title_activity_lunch_screen">LunchScreen</string>
     <string name="title_activity_dinner_screen">DinnerScreen</string>
+    <string name="title_activity_calories_list_screen">CaloriesListScreen</string>
 </resources>

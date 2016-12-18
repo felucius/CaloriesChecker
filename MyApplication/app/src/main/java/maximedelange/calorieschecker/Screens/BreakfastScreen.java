@@ -57,6 +57,7 @@ public class BreakfastScreen extends AppCompatActivity {
         calorieCounter = new CalorieCounter();
         getTableLayoutBreakfastProducts();
         changeStatusBar(0);
+        getTotalCalories();
     }
 
     public void getTableLayoutBreakfastProducts() {
@@ -121,6 +122,17 @@ public class BreakfastScreen extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Totaal calorieën " + calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
+    }
+
+    public void getTotalCalories(){
+        String information = null;
+        Intent intent = getIntent();
+        information = intent.getStringExtra("totalCalories");
+        if(information != null){
+            System.out.println("INFORMATION RETRIEVED" + information);
+            calorieCounter.addCalories(Integer.valueOf(information));
+            changeStatusBar(Integer.valueOf(information));
+        }
     }
 
     @Override

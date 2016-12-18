@@ -52,6 +52,7 @@ public class DinnerScreen extends AppCompatActivity {
         calorieCounter = new CalorieCounter();
         getTableLayoutDinnerProducts();
         changeStatusBar(0);
+        getTotalCalories();
     }
 
     public void getTableLayoutDinnerProducts() {
@@ -116,6 +117,17 @@ public class DinnerScreen extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Totaal calorieën " + calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
+    }
+
+    public void getTotalCalories(){
+        String information = null;
+        Intent intent = getIntent();
+        information = intent.getStringExtra("totalCalories");
+        if(information != null){
+            System.out.println("INFORMATION RETRIEVED" + information);
+            calorieCounter.addCalories(Integer.valueOf(information));
+            changeStatusBar(Integer.valueOf(information));
+        }
     }
 
     @Override

@@ -19,6 +19,7 @@ public class CategoryScreen extends AppCompatActivity {
     // Fields
     private Bitmap bitmap;
     private Bitmap resizedbitmap;
+    private String calorieInformation;
 
     // GUI Components
     private TextView lblBreakfast;
@@ -55,14 +56,14 @@ public class CategoryScreen extends AppCompatActivity {
         resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
         breakfastImage.setImageBitmap(resizedbitmap);
 
-        lblBreakfast = (TextView)findViewById(R.id.lblBreakfastShow);
-        lblBreakfast.setText("Breakfast");
-        lblBreakfast.setTextSize(30);
         btnCategory = (ImageButton)findViewById(R.id.btnBreakfast);
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent getIntent = getIntent();
                 Intent intent = new Intent(v.getContext(), BreakfastScreen.class);
+                calorieInformation = getIntent.getStringExtra("totalCalories");
+                intent.putExtra("totalCalories", calorieInformation);
                 startActivity(intent);
             }
         });
@@ -77,14 +78,14 @@ public class CategoryScreen extends AppCompatActivity {
         resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
         lunchImage.setImageBitmap(resizedbitmap);
 
-        lblLunch = (TextView)findViewById(R.id.lblLunchShow);
-        lblLunch.setText("Lunch");
-        lblLunch.setTextSize(30);
         btnCategory = (ImageButton)findViewById(R.id.btnLunch);
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent getIntent = getIntent();
                 Intent intent = new Intent(v.getContext(), LunchScreen.class);
+                calorieInformation = getIntent.getStringExtra("totalCalories");
+                intent.putExtra("totalCalories", calorieInformation);
                 startActivity(intent);
             }
         });
@@ -99,14 +100,14 @@ public class CategoryScreen extends AppCompatActivity {
         resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
         dinnerImage.setImageBitmap(resizedbitmap);
 
-        lblDinner = (TextView)findViewById(R.id.lblDinnerShow);
-        lblDinner.setText("Dinner");
-        lblDinner.setTextSize(30);
         btnCategory = (ImageButton)findViewById(R.id.btnDinner);
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent getIntent = getIntent();
                 Intent intent = new Intent(v.getContext(), DinnerScreen.class);
+                calorieInformation = getIntent.getStringExtra("totalCalories");
+                intent.putExtra("totalCalories", calorieInformation);
                 startActivity(intent);
             }
         });
@@ -114,10 +115,21 @@ public class CategoryScreen extends AppCompatActivity {
 
     public void goToCaloriesList(){
         caloriesListImage = (ImageButton)findViewById(R.id.btnCaloriesList);
+
+        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.calender);
+        int width=500;
+        int height=500;
+        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        caloriesListImage.setImageBitmap(resizedbitmap);
+
+        caloriesListImage = (ImageButton)findViewById(R.id.btnCaloriesList);
         caloriesListImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent getIntent = getIntent();
                 Intent intent = new Intent(v.getContext(), CaloriesListScreen.class);
+                calorieInformation = getIntent.getStringExtra("totalCalories");
+                intent.putExtra("totalCalories", calorieInformation);
                 startActivity(intent);
             }
         });
@@ -130,12 +142,16 @@ public class CategoryScreen extends AppCompatActivity {
     }
 
     public void getCalorieInformation(){
-        String calorieInformation;
         Intent intent = getIntent();
         calorieInformation = intent.getStringExtra("totalCalories");
 
         if(calorieInformation != null){
             actionBar.setTitle("Totaal calorieën " + calorieInformation);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Disables the button back press
     }
 }

@@ -1,6 +1,8 @@
 package maximedelange.calorieschecker.Screens;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,8 @@ public class HomeScreen extends AppCompatActivity {
 
     // GUI components
     private ImageButton btnGoTo;
+    private Bitmap bitmap;
+    private Bitmap resizedbitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,14 @@ public class HomeScreen extends AppCompatActivity {
 
         // Goes to the main screen
         goToCategory();
+        btnGoTo = (ImageButton)findViewById(R.id.btnImage);
+
+        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.scale);
+        int width=500;
+        int height=500;
+        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        btnGoTo.setImageBitmap(resizedbitmap);
+
     }
 
     @Override

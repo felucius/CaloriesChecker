@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/productImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/productImage"
+        android:layout_toEndOf="@+id/productImage"
+        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAlignment="viewStart" />
+
+
+</RelativeLayout>

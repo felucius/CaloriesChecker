@@ -24,6 +24,9 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
@@ -31,7 +34,7 @@ import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.Domain.ProductType;
 import maximedelange.calorieschecker.R;
 
-public class BreakfastScreen extends AppCompatActivity {
+public class BreakfastScreen extends AppCompatActivity implements Serializable{
 
     // Fields
     private ProductController productController = null;
@@ -41,9 +44,12 @@ public class BreakfastScreen extends AppCompatActivity {
     private Bitmap resizedbitmap = null;
     private CalorieCounter calorieCounter = null;
     private boolean isClicked = false;
+    private ArrayList<Product> products;
 
     // GUI Components
     private TextView textArray;
+    private TextView textCaloriesArray;
+    private TextView textProductArray;
     private ImageView image;
 
     @Override
@@ -55,9 +61,10 @@ public class BreakfastScreen extends AppCompatActivity {
 
         productController = new ProductController();
         calorieCounter = new CalorieCounter();
-        getTableLayoutBreakfastProducts();
         changeStatusBar(0);
         getTotalCalories();
+        getTotalProducts();
+        getTableLayoutBreakfastProducts();
     }
 
     public void getTableLayoutBreakfastProducts() {
@@ -75,6 +82,8 @@ public class BreakfastScreen extends AppCompatActivity {
 
                 // Create content for tablerows
                 textArray = new TextView(this);
+                textCaloriesArray = new TextView(this);
+                textProductArray = new TextView(this);
 
                 // Add image for each row
                 image = new ImageView(this);
@@ -88,11 +97,15 @@ public class BreakfastScreen extends AppCompatActivity {
                 tableRow.addView(image);
 
                 textArray.setText(product.getName());
-                textArray.setTextSize(22);
+                textCaloriesArray.setText(" Cal: " + String.valueOf(product.getCalories()));
+                textProductArray.setText(" Prod: " + String.valueOf(product.getProductType()));
+                textArray.setTextSize(18);
                 textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
                 tableRow.addView(textArray);
+                tableRow.addView(textCaloriesArray);
+                tableRow.addView(textProductArray);
 
                 tableRow.setOnClickListener(new View.OnClickListener() {
                     int colorGreen = getResources().getColor(android.R.color.holo_green_light);
@@ -135,6 +148,14 @@ public class BreakfastScreen extends AppCompatActivity {
         }
     }
 
+    public void getTotalProducts(){
+        Intent intent = getIntent();
+        products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
+        if(products != null){
+            productController.setProducts(products);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -149,6 +170,7 @@ public class BreakfastScreen extends AppCompatActivity {
             case R.id.action_back:
                 Intent intent = new Intent(this.getApplicationContext(), CategoryScreen.class);
                 intent.putExtra("totalCalories", String.valueOf(calorieCounter.getCountcalories()));
+                intent.putExtra("totalProducts", products);
                 startActivity(intent);
                 return true;
             default:

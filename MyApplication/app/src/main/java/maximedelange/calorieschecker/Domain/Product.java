@@ -2,11 +2,13 @@ package maximedelange.calorieschecker.Domain;
 
 import android.media.Image;
 
+import java.io.Serializable;
+
 /**
  * Created by M on 12/14/2016.
  */
 
-public class Product {
+public class Product implements Serializable{
     // Fields
     private int count = 0;
     private int ID = 0;
@@ -57,6 +59,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return "Name: " + name + " Calories: " + calories;
+        return "Name: " + name + " Calories: " + calories + " Product: " + productType;
     }
 }

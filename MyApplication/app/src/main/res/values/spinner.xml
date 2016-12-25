@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Category_array">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+    </string-array>
+
+    <string-array name="Product_array">
+        <item>Alcohol</item>
+        <item>Bread</item>
+        <item>Chicken</item>
+        <item>Dairy</item>
+        <item>Fruit</item>
+        <item>Meat</item>
+        <item>Pasta</item>
+        <item>Potatoes</item>
+        <item>SandwichFilling</item>
+        <item>Snacks</item>
+        <item>Vegetables</item>
+    </string-array>
+</resources>

@@ -14,6 +14,7 @@ import maximedelange.calorieschecker.R;
 public class ProductController {
     // Fields
     private ArrayList<Product> products;
+    private int amount = 0;
 
     // Constructor
     public ProductController(){
@@ -29,34 +30,35 @@ public class ProductController {
         return this.products;
     }
 
+    public void setProducts(ArrayList<Product> products){
+        this.products = products;
+    }
+
     public ArrayList<Product> createProductData(){
         this.products = new ArrayList<>();
 
-        products.add(new Product("Bruin bolletje", 100, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bun));
-        products.add(new Product("Wit bolletje", 120, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bun));
-        products.add(new Product("Bruin snee brood", 100, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bread));
-        products.add(new Product("Wit snee brood", 100, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bread));
-        products.add(new Product("Bier donker", 150, ProductType.Alcohol, CategoryType.Dinner, R.mipmap.beerdark));
-        products.add(new Product("Bier zoet", 120, ProductType.Alcohol, CategoryType.Dinner, R.mipmap.beerlight));
-        products.add(new Product("Glas melk", 50, ProductType.Dairy, CategoryType.Lunch, R.mipmap.milk));
-        products.add(new Product("Kom yoghurt", 70, ProductType.Dairy, CategoryType.Dinner, R.mipmap.yogurt));
-        products.add(new Product("Toetje", 120, ProductType.Dairy, CategoryType.Dinner, R.mipmap.dessert));
-        products.add(new Product("Pindakaas", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.peanutbutter));
-        products.add(new Product("Chocolade pasta", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.chocolatespread));
-        products.add(new Product("Kaas", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.cheese));
+        products.add(new Product("Bun", 120, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bun));
+        products.add(new Product("Slice bread", 100, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bread));
+        products.add(new Product("Beer", 150, ProductType.Alcohol, CategoryType.Dinner, R.mipmap.beerdark));
+        products.add(new Product("Milk", 50, ProductType.Dairy, CategoryType.Lunch, R.mipmap.milk));
+        products.add(new Product("Yogurt", 70, ProductType.Dairy, CategoryType.Dinner, R.mipmap.yogurt));
+        products.add(new Product("Dessert", 120, ProductType.Dairy, CategoryType.Dinner, R.mipmap.dessert));
+        products.add(new Product("P.butter", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.peanutbutter));
+        products.add(new Product("C.paste", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.chocolatespread));
+        products.add(new Product("Cheese", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.cheese));
         products.add(new Product("Ham", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.ham));
-        products.add(new Product("Kipfilet", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.chicken));
-        products.add(new Product("Aardappel", 400, ProductType.Potatoes, CategoryType.Dinner, R.mipmap.potato));
+        products.add(new Product("C.breast", 100, ProductType.SandwichFilling, CategoryType.Breakfast, R.mipmap.chicken));
+        products.add(new Product("Potato", 400, ProductType.Potatoes, CategoryType.Dinner, R.mipmap.potato));
         products.add(new Product("Hamburger", 100, ProductType.Meat, CategoryType.Dinner, R.mipmap.hamburger));
-        products.add(new Product("Spagetti", 100, ProductType.Pasta, CategoryType.Dinner, R.mipmap.spagetti));
-        products.add(new Product("Courgette", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.cucumber));
-        products.add(new Product("Diepvries groente", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.vegetable));
-        products.add(new Product("Tomaten", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.tomato));
-        products.add(new Product("Sla", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.lettuce));
-        products.add(new Product("Appel", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.apple));
-        products.add(new Product("Banaan", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.banana));
-        products.add(new Product("Mandarijn", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.orange));
-        products.add(new Product("Kipfilet blok/heel", 100, ProductType.Chicken, CategoryType.Dinner, R.mipmap.chicken));
+        products.add(new Product("Spaghetti", 100, ProductType.Pasta, CategoryType.Dinner, R.mipmap.spagetti));
+        products.add(new Product("Zucchini", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.cucumber));
+        products.add(new Product("Vegetable", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.vegetable));
+        products.add(new Product("Tomato", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.tomato));
+        products.add(new Product("Lettuce", 100, ProductType.Vegetables, CategoryType.Dinner, R.mipmap.lettuce));
+        products.add(new Product("Apple", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.apple));
+        products.add(new Product("Banana", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.banana));
+        products.add(new Product("Orange", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.orange));
+        products.add(new Product("Chicken", 100, ProductType.Chicken, CategoryType.Dinner, R.mipmap.chicken));
 
         return products;
     }

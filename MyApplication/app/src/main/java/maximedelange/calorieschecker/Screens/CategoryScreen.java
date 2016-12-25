@@ -12,24 +12,31 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
-public class CategoryScreen extends AppCompatActivity {
+public class CategoryScreen extends AppCompatActivity implements Serializable {
 
     // Fields
     private Bitmap bitmap;
     private Bitmap resizedbitmap;
     private String calorieInformation;
+    private String productInformation;
+    private ProductController productController;
+    @SuppressWarnings("unchecked")
+    private ArrayList<Product> products;
 
     // GUI Components
-    private TextView lblBreakfast;
-    private TextView lblLunch;
-    private TextView lblDinner;
     private ImageButton btnCategory;
     private ImageButton breakfastImage;
     private ImageButton lunchImage;
     private ImageButton dinnerImage;
     private ImageButton caloriesListImage;
+    private ImageButton productImage;
     private ActionBar actionBar;
 
     @Override
@@ -39,12 +46,15 @@ public class CategoryScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        productController = new ProductController();
         goToBreakfast();
         goToLunch();
         goToDinner();
+        goToProductList();
         goToCaloriesList();
         changeStatusBar(0);
         getCalorieInformation();
+        getProductInformation();
     }
 
     public void goToBreakfast(){
@@ -64,6 +74,7 @@ public class CategoryScreen extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), BreakfastScreen.class);
                 calorieInformation = getIntent.getStringExtra("totalCalories");
                 intent.putExtra("totalCalories", calorieInformation);
+                intent.putExtra("totalProducts", products);
                 startActivity(intent);
             }
         });
@@ -86,6 +97,7 @@ public class CategoryScreen extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), LunchScreen.class);
                 calorieInformation = getIntent.getStringExtra("totalCalories");
                 intent.putExtra("totalCalories", calorieInformation);
+                intent.putExtra("totalProducts", products);
                 startActivity(intent);
             }
         });
@@ -108,6 +120,7 @@ public class CategoryScreen extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), DinnerScreen.class);
                 calorieInformation = getIntent.getStringExtra("totalCalories");
                 intent.putExtra("totalCalories", calorieInformation);
+                intent.putExtra("totalProducts", products);
                 startActivity(intent);
             }
         });
@@ -135,6 +148,29 @@ public class CategoryScreen extends AppCompatActivity {
         });
     }
 
+    public void goToProductList(){
+        productImage = (ImageButton)findViewById(R.id.btnAddProduct);
+
+        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        int width=500;
+        int height=500;
+        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        productImage.setImageBitmap(resizedbitmap);
+
+        productImage = (ImageButton)findViewById(R.id.btnAddProduct);
+        productImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getIntent = getIntent();
+                Intent intent = new Intent(v.getContext(), ProductScreen.class);
+                calorieInformation = getIntent.getStringExtra("totalCalories");
+                intent.putExtra("totalProducts", products);
+                intent.putExtra("totalCalories", calorieInformation);
+                startActivity(intent);
+            }
+        });
+    }
+
     public void changeStatusBar(int calories){
         actionBar = getSupportActionBar();
         actionBar.setTitle("Totaal calorieën " + calories);
@@ -147,6 +183,18 @@ public class CategoryScreen extends AppCompatActivity {
 
         if(calorieInformation != null){
             actionBar.setTitle("Totaal calorieën " + calorieInformation);
+        }
+    }
+
+    public void getProductInformation(){
+        Intent intent = getIntent();
+        //productInformation = intent.getStringExtra("totalProducts");
+
+        products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
+
+        if(products != null){
+            productController.setProducts(products);
+            System.out.println("PRODUCT INFORMATION: " + products.size());
         }
     }
 

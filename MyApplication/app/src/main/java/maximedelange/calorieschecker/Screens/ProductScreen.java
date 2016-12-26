@@ -1,6 +1,8 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +18,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,30 +41,28 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     // Field
     private ProductController productController = null;
     private CalorieCounter calorieCounter = null;
-    private String productInformation = null;
     private ArrayList<Product> products;
     private int imageHolder = 0;
     private CategoryType categoryHolder = null;
     private ProductType productHolder = null;
     private int newProdutImage = 0;
     int tempValue;
-    int productTempValue; // klopt niet
-    private String product;
-    private int hoi;
+    int productTempValue;
+    private Context context;
+    private Toast toast;
 
     // GUI Components
-    private Button btnImages;
     private Button btnAddNewProduct;
     private Spinner dropDownCategories;
     private Spinner dropDownProducts;
     private Spinner dropDownImages;
     private EditText productName;
     private EditText productCalories;
-    private String[] foods = {"apple", "baguette", "banana", "beerdark", "beerlight", "bread", "bun",
+    private String[] foods = {"choose an image", "apple", "baguette", "banana", "beerdark", "beerlight", "bread", "bun",
             "cheese", "chicken", "chocolatespread", "croissant", "cucumber", "dessert",
             "ham", "hamburger", "lettuce", "milk", "orange", "pancakes", "peanutbutter", "pizza", "potato",
             "snacks", "spagetti", "steak", "tomato", "vegetable", "wheat", "yogurt"};
-    private int images[] = {R.mipmap.apple, R.mipmap.baguette, R.mipmap.banana, R.mipmap.beerdark,
+    private int images[] = {R.mipmap.stockimage, R.mipmap.apple, R.mipmap.baguette, R.mipmap.banana, R.mipmap.beerdark,
             R.mipmap.beerlight, R.mipmap.bread, R.mipmap.bun, R.mipmap.cheese, R.mipmap.chicken,
             R.mipmap.chocolatespread, R.mipmap.croissant, R.mipmap.cucumber, R.mipmap.dessert,
             R.mipmap.ham, R.mipmap.hamburger, R.mipmap.lettuce, R.mipmap.milk, R.mipmap.orange,
@@ -117,32 +120,70 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
 
     public void addNewProduct(){
         productName = (EditText)findViewById(R.id.txtName);
+        productName.setHint("enter product name");
         productCalories = (EditText)findViewById(R.id.txtCalories);
+        productCalories.setHint("enter calories");
         btnAddNewProduct = (Button)findViewById(R.id.btnAddProduct);
         btnAddNewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
+                products                                                                                           = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
 
                 int holder = newImage();
                 CategoryType catHolder = newCategory();
                 ProductType prodHolder = newProduct();
+
                 if(products != null){
-                    products.add(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
-                            prodHolder,
-                            catHolder, holder));
+                    if(!productName.getText().toString().equals("") && !productCalories.getText().toString().equals("")
+                            && prodHolder != null && catHolder != null && holder != 0){
+                        products.add(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+                                prodHolder,
+                                catHolder, holder));
 
-                    productController.setProducts(products);
-                    changeStatusBar(products.size());
+                        productController.setProducts(products);
+                        changeStatusBar(products.size());
+
+                        context = getApplicationContext();
+                        CharSequence text = "Added new product";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }else{
+                        context = getApplicationContext();
+                        CharSequence text = "Cannot add an empty 'name' or amount of 'calories'";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
                 }else{
-                    productController.addProduct(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
-                            prodHolder,
-                            catHolder, holder));
+                    if(!productName.getText().toString().equals("") && !productCalories.getText().toString().equals("")
+                            && prodHolder != null && catHolder != null && holder != 0){
+                        System.out.println("PRODUCT NAME: " + productName);
+                        productController.addProduct(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+                                prodHolder,
+                                catHolder, holder));
 
-                    products = productController.getProducts();
-                    productController.setProducts(products);
-                    changeStatusBar(productController.getProducts().size());
+                        products = productController.getProducts();
+                        productController.setProducts(products);
+                        changeStatusBar(productController.getProducts().size());
+
+                        context = getApplicationContext();
+                        CharSequence text = "Added new product";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }else{
+                        context = getApplicationContext();
+                        CharSequence text = "Cannot add an empty 'name' or amount of 'calories'";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
                 }
             }
         });
@@ -150,9 +191,10 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
 
     public int initializeDropDownCategoryMenu(){
         dropDownCategories = (Spinner)findViewById(R.id.dropDownCategory);
+        dropDownCategories.setPrompt("choose a category");
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Category_array,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.custom_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropDownCategories.setAdapter(adapter);
         return R.array.Category_array;
     }
@@ -162,6 +204,14 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 productTempValue = dropDownProducts.getSelectedItemPosition();
+
+                TextView text = (TextView)parent.getChildAt(0);
+                if(text.getText().toString().equals("choose a product")){
+                    text.setTextColor(Color.parseColor("#808080"));
+                }
+                else{
+                    text.setTextColor(Color.parseColor("#051dba"));
+                }
             }
 
             @Override
@@ -179,6 +229,14 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tempValue = dropDownCategories.getSelectedItemPosition();
+
+                TextView text = (TextView)parent.getChildAt(0);
+                if(text.getText().toString().equals("choose a category")){
+                    text.setTextColor(Color.parseColor("#808080"));
+                }
+                else{
+                    text.setTextColor(Color.parseColor("#051dba"));
+                }
             }
 
             @Override
@@ -191,15 +249,18 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     }
 
     public void initializeDropDownCategoryProductMenu(){
+
         dropDownProducts = (Spinner)findViewById(R.id.dropDownProduct);
+        dropDownProducts.setPrompt("choose a product");
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Product_array,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.custom_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropDownProducts.setAdapter(adapter);
     }
 
     public void initializeDropDownImages(){
         dropDownImages = (Spinner)findViewById(R.id.dropDownImage);
+        dropDownImages.setPrompt("choose an image");
         Adapter adapter = new Adapter(this, foods, images);
         dropDownImages.setAdapter(adapter);
     }
@@ -213,6 +274,13 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                TextView text = (TextView)parent.getChildAt(0);
+                if(text.getText().toString().equals("choose a product")){
+                    text.setTextColor(Color.parseColor("#808080"));
+                }
+                else{
+                    text.setTextColor(Color.parseColor("#051dba"));
+                }
 
             }
         });
@@ -223,36 +291,45 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public ProductType newProduct(){
         switch(productTempValue){
             case 0:
-                productHolder = ProductType.Alcohol;
+                context = getApplicationContext();
+                CharSequence text = "Cannot add an empty product type";
+                int duration = Toast.LENGTH_SHORT;
+
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                productHolder = null;
                 break;
             case 1:
-                productHolder = ProductType.Bread;
+                productHolder = ProductType.Alcohol;
                 break;
             case 2:
-                productHolder = ProductType.Chicken;
+                productHolder = ProductType.Bread;
                 break;
             case 3:
-                productHolder = ProductType.Dairy;
+                productHolder = ProductType.Chicken;
                 break;
             case 4:
-                productHolder = ProductType.Fruit;
+                productHolder = ProductType.Dairy;
                 break;
             case 5:
-                productHolder = ProductType.Meat;
+                productHolder = ProductType.Fruit;
                 break;
             case 6:
-                productHolder = ProductType.Pasta;
+                productHolder = ProductType.Meat;
                 break;
             case 7:
-                productHolder = ProductType.Potatoes;
+                productHolder = ProductType.Pasta;
                 break;
             case 8:
-                productHolder = ProductType.SandwichFilling;
+                productHolder = ProductType.Potatoes;
                 break;
             case 9:
-                productHolder = ProductType.Snacks;
+                productHolder = ProductType.SandwichFilling;
                 break;
             case 10:
+                productHolder = ProductType.Snacks;
+                break;
+            case 11:
                 productHolder = ProductType.Vegetables;
                 break;
         }
@@ -263,12 +340,21 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public CategoryType newCategory(){
         switch(tempValue){
             case 0:
-                categoryHolder = CategoryType.Breakfast;
+                context = getApplicationContext();
+                CharSequence text = "Cannot add an empty category";
+                int duration = Toast.LENGTH_SHORT;
+
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                categoryHolder = null;
                 break;
             case 1:
-                categoryHolder = CategoryType.Lunch;
+                categoryHolder = CategoryType.Breakfast;
                 break;
             case 2:
+                categoryHolder = CategoryType.Lunch;
+                break;
+            case 3:
                 categoryHolder = CategoryType.Dinner;
                 break;
         }
@@ -279,90 +365,99 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public int newImage(){
         switch(imageHolder){
             case 0:
-                newProdutImage = R.mipmap.apple;
+                context = getApplicationContext();
+                CharSequence text = "Cannot add an stock image";
+                int duration = Toast.LENGTH_SHORT;
+
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                newProdutImage = 0;
                 break;
             case 1:
-                newProdutImage = R.mipmap.baguette;
+                newProdutImage = R.mipmap.apple;
                 break;
             case 2:
-                newProdutImage = R.mipmap.banana;
+                newProdutImage = R.mipmap.baguette;
                 break;
             case 3:
-                newProdutImage = R.mipmap.beerdark;
+                newProdutImage = R.mipmap.banana;
                 break;
             case 4:
-                newProdutImage = R.mipmap.beerlight;
+                newProdutImage = R.mipmap.beerdark;
                 break;
             case 5:
-                newProdutImage = R.mipmap.bread;
+                newProdutImage = R.mipmap.beerlight;
                 break;
             case 6:
-                newProdutImage = R.mipmap.bun;
+                newProdutImage = R.mipmap.bread;
                 break;
             case 7:
-                newProdutImage = R.mipmap.cheese;
+                newProdutImage = R.mipmap.bun;
                 break;
             case 8:
-                newProdutImage = R.mipmap.chicken;
+                newProdutImage = R.mipmap.cheese;
                 break;
             case 9:
-                newProdutImage = R.mipmap.chocolatespread;
+                newProdutImage = R.mipmap.chicken;
                 break;
             case 10:
-                newProdutImage = R.mipmap.croissant;
+                newProdutImage = R.mipmap.chocolatespread;
                 break;
             case 11:
-                newProdutImage = R.mipmap.cucumber;
+                newProdutImage = R.mipmap.croissant;
                 break;
             case 12:
-                newProdutImage = R.mipmap.dessert;
+                newProdutImage = R.mipmap.cucumber;
                 break;
             case 13:
-                newProdutImage = R.mipmap.ham;
+                newProdutImage = R.mipmap.dessert;
                 break;
             case 14:
-                newProdutImage = R.mipmap.hamburger;
+                newProdutImage = R.mipmap.ham;
                 break;
             case 15:
-                newProdutImage = R.mipmap.lettuce;
+                newProdutImage = R.mipmap.hamburger;
                 break;
             case 16:
-                newProdutImage = R.mipmap.milk;
+                newProdutImage = R.mipmap.lettuce;
                 break;
             case 17:
-                newProdutImage = R.mipmap.orange;
+                newProdutImage = R.mipmap.milk;
                 break;
             case 18:
-                newProdutImage = R.mipmap.pancakes;
+                newProdutImage = R.mipmap.orange;
                 break;
             case 19:
-                newProdutImage = R.mipmap.peanutbutter;
+                newProdutImage = R.mipmap.pancakes;
                 break;
             case 20:
-                newProdutImage = R.mipmap.pizza;
+                newProdutImage = R.mipmap.peanutbutter;
                 break;
             case 21:
-                newProdutImage = R.mipmap.potato;
+                newProdutImage = R.mipmap.pizza;
                 break;
             case 22:
-                newProdutImage = R.mipmap.snacks;
+                newProdutImage = R.mipmap.potato;
                 break;
             case 23:
-                newProdutImage = R.mipmap.spagetti;
+                newProdutImage = R.mipmap.snacks;
                 break;
             case 24:
-                newProdutImage = R.mipmap.steak;
+                newProdutImage = R.mipmap.spagetti;
                 break;
             case 25:
-                newProdutImage = R.mipmap.tomato;
+                newProdutImage = R.mipmap.steak;
                 break;
             case 26:
-                newProdutImage = R.mipmap.vegetable;
+                newProdutImage = R.mipmap.tomato;
                 break;
             case 27:
-                newProdutImage = R.mipmap.wheat;
+                newProdutImage = R.mipmap.vegetable;
                 break;
             case 28:
+                newProdutImage = R.mipmap.wheat;
+                break;
+            case 29:
                 newProdutImage = R.mipmap.yogurt;
                 break;
         }

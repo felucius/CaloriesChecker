@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="Category_array">
+        <item>choose a category</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Dinner</item>
     </string-array>
 
     <string-array name="Product_array">
+        <item>choose a product</item>
         <item>Alcohol</item>
         <item>Bread</item>
         <item>Chicken</item>

@@ -1,5 +1,7 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,11 +18,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -45,11 +49,15 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     private CalorieCounter calorieCounter = null;
     private boolean isClicked = false;
     private ArrayList<Product> products;
+    private Context context;
+    private Toast toast;
 
     // GUI Components
     private TextView textArray;
     private TextView textCaloriesArray;
     private TextView textProductArray;
+    private Button dismisspopup;
+    private Button removeproduct;
     private ImageView image;
 
     @Override
@@ -107,6 +115,40 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                 tableRow.addView(textCaloriesArray);
                 tableRow.addView(textProductArray);
 
+                tableRow.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        v.setBackgroundColor(Color.RED);
+
+                        final Dialog dialog = new Dialog(BreakfastScreen.this);
+                        dialog.setContentView(R.layout.popup);
+                        dialog.show();
+
+                        dismisspopup = (Button)dialog.findViewById(R.id.dismissPopup);
+                        dismisspopup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        removeproduct = (Button)dialog.findViewById(R.id.removeProduct);
+                        removeproduct.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                products = productController.getProducts();
+                                products.remove(product);
+                                productController.setProducts(products);
+                                productController.getProducts();
+                                showToastMessage("Product has been removed");
+                            }
+                        });
+
+                        return false;
+                    }
+                });
+
                 tableRow.setOnClickListener(new View.OnClickListener() {
                     int colorGreen = getResources().getColor(android.R.color.holo_green_light);
                     int colorWhite = getResources().getColor(android.R.color.background_light);
@@ -154,6 +196,15 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         if(products != null){
             productController.setProducts(products);
         }
+    }
+
+    public void showToastMessage(String message){
+        context = getApplicationContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_SHORT;
+
+        toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     @Override

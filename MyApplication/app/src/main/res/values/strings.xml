@@ -7,4 +7,6 @@
     <string name="title_activity_dinner_screen">DinnerScreen</string>
     <string name="title_activity_calories_list_screen">CaloriesListScreen</string>
     <string name="title_activity_product_screen">ProductScreen</string>
+
+    <string name="spinnerProduct">choose a product</string>
 </resources>

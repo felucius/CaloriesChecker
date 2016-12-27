@@ -131,7 +131,7 @@ public class LunchScreen extends AppCompatActivity implements Serializable{
 
     public void changeStatusBar(int calories){
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Totaal calorieën " + calories);
+        actionBar.setTitle("Total calories: " + calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
     }
 

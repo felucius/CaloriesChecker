@@ -144,19 +144,11 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                         productController.setProducts(products);
                         changeStatusBar(products.size());
 
-                        context = getApplicationContext();
-                        CharSequence text = "Added new product";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
+                        getToastMessage("Added new product");
                     }else{
-                        context = getApplicationContext();
-                        CharSequence text = "Cannot add an empty 'name' or amount of 'calories'";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
+                        if(productName.getText().toString().equals("") || productCalories.getText().toString().equals("")){
+                            getToastMessage("Cannot add an empty 'name' or amount of 'calories'");
+                        }
                     }
                 }else{
                     if(!productName.getText().toString().equals("") && !productCalories.getText().toString().equals("")
@@ -170,19 +162,11 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                         productController.setProducts(products);
                         changeStatusBar(productController.getProducts().size());
 
-                        context = getApplicationContext();
-                        CharSequence text = "Added new product";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
+                        getToastMessage("Added new product");
                     }else{
-                        context = getApplicationContext();
-                        CharSequence text = "Cannot add an empty 'name' or amount of 'calories'";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
+                        if(productName.getText().toString().equals("") || productCalories.getText().toString().equals("")){
+                            getToastMessage("Cannot add an empty 'name' or amount of 'calories'");
+                        }
                     }
                 }
             }
@@ -265,6 +249,15 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         dropDownImages.setAdapter(adapter);
     }
 
+    public void getToastMessage(String message){
+        context = getApplicationContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_SHORT;
+
+        toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
     public int getSelectedItem(){
         dropDownImages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -291,12 +284,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public ProductType newProduct(){
         switch(productTempValue){
             case 0:
-                context = getApplicationContext();
-                CharSequence text = "Cannot add an empty product type";
-                int duration = Toast.LENGTH_SHORT;
-
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                getToastMessage("Cannot add an empty product type");
                 productHolder = null;
                 break;
             case 1:
@@ -340,12 +328,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public CategoryType newCategory(){
         switch(tempValue){
             case 0:
-                context = getApplicationContext();
-                CharSequence text = "Cannot add an empty category";
-                int duration = Toast.LENGTH_SHORT;
-
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                getToastMessage("Cannot add an empty category");
                 categoryHolder = null;
                 break;
             case 1:
@@ -365,12 +348,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public int newImage(){
         switch(imageHolder){
             case 0:
-                context = getApplicationContext();
-                CharSequence text = "Cannot add an stock image";
-                int duration = Toast.LENGTH_SHORT;
-
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                getToastMessage("Cannot add an stock image");
                 newProdutImage = 0;
                 break;
             case 1:

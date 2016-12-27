@@ -1,5 +1,6 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,12 +36,14 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     private ArrayList<Product> products;
 
     // GUI Components
-    private ImageButton btnCategory;
-    private ImageButton breakfastImage;
-    private ImageButton lunchImage;
-    private ImageButton dinnerImage;
-    private ImageButton caloriesListImage;
-    private ImageButton productImage;
+    private Button btnCategory;
+    private Button breakfastImage;
+    private Button lunchImage;
+    private Button dinnerImage;
+    private Button caloriesListImage;
+    private Button productImage;
+    private Button dismisspopup;
+    private Button removeproduct;
     private ActionBar actionBar;
 
     @Override
@@ -58,16 +65,8 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     }
 
     public void goToBreakfast(){
-        breakfastImage = (ImageButton)findViewById(R.id.btnBreakfast);
-
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.breakfast);
-        int width=500;
-        int height=500;
-        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        breakfastImage.setImageBitmap(resizedbitmap);
-
-        btnCategory = (ImageButton)findViewById(R.id.btnBreakfast);
-        btnCategory.setOnClickListener(new View.OnClickListener() {
+        breakfastImage = (Button)findViewById(R.id.btnBreakfast);
+        breakfastImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent getIntent = getIntent();
@@ -81,16 +80,8 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     }
 
     public void goToLunch(){
-        lunchImage = (ImageButton)findViewById(R.id.btnLunch);
-
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.lunch);
-        int width=500;
-        int height=500;
-        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        lunchImage.setImageBitmap(resizedbitmap);
-
-        btnCategory = (ImageButton)findViewById(R.id.btnLunch);
-        btnCategory.setOnClickListener(new View.OnClickListener() {
+        lunchImage = (Button)findViewById(R.id.btnLunch);
+        lunchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent getIntent = getIntent();
@@ -104,16 +95,8 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     }
 
     public void goToDinner(){
-        dinnerImage = (ImageButton)findViewById(R.id.btnDinner);
-
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.dinner);
-        int width=500;
-        int height=500;
-        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        dinnerImage.setImageBitmap(resizedbitmap);
-
-        btnCategory = (ImageButton)findViewById(R.id.btnDinner);
-        btnCategory.setOnClickListener(new View.OnClickListener() {
+        dinnerImage = (Button)findViewById(R.id.btnDinner);
+        dinnerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent getIntent = getIntent();
@@ -127,15 +110,7 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     }
 
     public void goToCaloriesList(){
-        caloriesListImage = (ImageButton)findViewById(R.id.btnCaloriesList);
-
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.calender);
-        int width=500;
-        int height=500;
-        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        caloriesListImage.setImageBitmap(resizedbitmap);
-
-        caloriesListImage = (ImageButton)findViewById(R.id.btnCaloriesList);
+        caloriesListImage = (Button)findViewById(R.id.btnCaloriesList);
         caloriesListImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,15 +124,7 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     }
 
     public void goToProductList(){
-        productImage = (ImageButton)findViewById(R.id.btnAddProduct);
-
-        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        int width=500;
-        int height=500;
-        resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        productImage.setImageBitmap(resizedbitmap);
-
-        productImage = (ImageButton)findViewById(R.id.btnAddProduct);
+        productImage = (Button)findViewById(R.id.btnAddProduct);
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +140,7 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
 
     public void changeStatusBar(int calories){
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Totaal calorieën " + calories);
+        actionBar.setTitle("Total calories: " + calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
     }
 
@@ -182,7 +149,7 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
         calorieInformation = intent.getStringExtra("totalCalories");
 
         if(calorieInformation != null){
-            actionBar.setTitle("Totaal calorieën " + calorieInformation);
+            actionBar.setTitle("Total calories: " + calorieInformation);
         }
     }
 
@@ -195,6 +162,37 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
         if(products != null){
             productController.setProducts(products);
             System.out.println("PRODUCT INFORMATION: " + products.size());
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.credits, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_credits:
+
+                final Dialog dialog = new Dialog(CategoryScreen.this);
+                dialog.setContentView(R.layout.popupcredits);
+                dialog.show();
+
+                dismisspopup = (Button)dialog.findViewById(R.id.dismissPopup);
+                dismisspopup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

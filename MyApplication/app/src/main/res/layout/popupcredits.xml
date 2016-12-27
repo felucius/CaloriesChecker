@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@android:color/background_light">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="1dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#051dba"
+            android:text="Icons are designed by the following companies\n\n"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:textColor="#051dba"
+                android:text="Designed by 'Freepik' from 'www.flaticon.com'\n
+                \nDesigned by ' Iconfinder' from 'www.iconfinder.com'\n
+                \nDesigned by 'Icon Archive' from 'www.iconarchive.com'\n
+                \nDesigned by 'Icon Shop' from 'www.freeiconshop.com'\n
+                \nDesigned by 'My Iconfinder' from 'www.myiconfinder.com'\n" />
+            <Button
+                android:id="@+id/dismissPopup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:textColor="#051dba"
+                android:text="Dismiss message" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

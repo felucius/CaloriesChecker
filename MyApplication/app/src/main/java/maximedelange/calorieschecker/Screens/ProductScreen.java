@@ -48,6 +48,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     private Context context;
     private Toast toast;
     private Database database;
+    private int productCounter = 0;
 
     // GUI Components
     private Button btnAddNewProduct;
@@ -138,10 +139,11 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                             && prodHolder != null && catHolder != null && holder != 0){
 
                         // SQLITE DATABASE
-                        database.addProductToDatabase(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+                        database.addProductToDatabase(new Product(productCounter, productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
                                 prodHolder,
                                 catHolder, holder));
                         products = database.readProductFromDatabase();
+                        productCounter++;
                         changeStatusBar(products.size());
 
                         getToastMessage("Added new product");
@@ -155,9 +157,10 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                             && prodHolder != null && catHolder != null && holder != 0){
 
                         // SQLITE DATABASE
-                        database.addProductToDatabase(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+                        database.addProductToDatabase(new Product(productCounter, productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
                                 prodHolder,
                                 catHolder, holder));
+                        productCounter++;
                         products = database.readProductFromDatabase();
                         changeStatusBar(products.size());
 

@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
@@ -42,16 +43,18 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
 
     // Fields
     private ProductController productController = null;
+    private ArrayList<Product> products = null;
+    private ArrayList<Product> combinedProducts = null;
+    private ArrayList<Product> databaseProducts = null;
     private TableLayout tableLayout = null;
     private TableRow tableRow = null;
     private Bitmap bitmap = null;
     private Bitmap resizedbitmap = null;
     private CalorieCounter calorieCounter = null;
-    private boolean isClicked = false;
-    private ArrayList<Product> products;
     private Context context;
     private Toast toast;
     private String information = null;
+    private Database database = null;
 
     // GUI Components
     private TextView textArray;
@@ -68,6 +71,9 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        combinedProducts = new ArrayList<>();
+        databaseProducts = new ArrayList<>();
+        database = new Database(this, null, null, 1);
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
@@ -113,7 +119,9 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                 resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
                 image.setImageBitmap(resizedbitmap);
                 image.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
-                tableRow.addView(image);
+                //image.setBackgroundResource(R.drawable.imagestyle);
+                image.setAdjustViewBounds(true);
+                tableRow.addView(image, 0, new TableRow.LayoutParams(400, 400));
 
                 textArray.setText(product.getName());
                 textCaloriesArray.setText(" Cal: " + String.valueOf(product.getCalories()));
@@ -122,10 +130,11 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                 textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
+
                 tableRow.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
-                tableRow.addView(textArray);
-                tableRow.addView(textCaloriesArray);
-                tableRow.addView(textProductArray);
+                tableRow.addView(textArray, 1, new TableRow.LayoutParams(200, 500));
+                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(200, 400));
+                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(200, 400));
 
                 tableRow.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -152,7 +161,8 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                             public void onClick(View v) {
                                 Intent intent = new Intent(v.getContext(), BreakfastScreen.class);
                                 dialog.dismiss();
-                                products = productController.getStaticProducts();
+                                products = combinedProducts;
+                                database.removeFromDatabase(product);
                                 products.remove(product);
                                 productController.setStaticProducts(products);
                                 productController.getStaticProducts();
@@ -190,7 +200,6 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     }
 
     public void getTotalCalories(){
-        String information = null;
         Intent intent = getIntent();
         information = intent.getStringExtra("totalCalories");
         if(information != null){
@@ -204,9 +213,21 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
-            productController.setStaticProducts(products);
+
+            databaseProducts = database.readProductFromDatabase();
+            if(databaseProducts.size() <= 0){
+                showToastMessage("You have no products.\nAdd one in 'Products' page");
+            }
+            combinedProducts.addAll(products);
+            productController.setStaticProducts(combinedProducts);
+
         }else{
-            productController.setStaticProducts(productController.getProducts());
+            databaseProducts = database.readProductFromDatabase();
+            if(databaseProducts.size() <= 0){
+                showToastMessage("You have no products.\nAdd one in 'Products' page");
+            }
+            combinedProducts.addAll(databaseProducts);
+            productController.setStaticProducts(combinedProducts);
         }
     }
 

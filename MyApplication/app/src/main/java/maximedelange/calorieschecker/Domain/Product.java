@@ -19,8 +19,8 @@ public class Product implements Serializable{
     private int image;
 
     // Constructor
-    public Product(String name, int calories, ProductType productType, CategoryType categoryType, int image){
-        setID(++count);
+    public Product(int ID, String name, int calories, ProductType productType, CategoryType categoryType, int image){
+        this.ID = ID;
         this.name = name;
         this.calories = calories;
         this.productType = productType;

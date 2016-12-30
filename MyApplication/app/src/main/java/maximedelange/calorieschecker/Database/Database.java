@@ -29,11 +29,16 @@ public class Database extends SQLiteOpenHelper{
     public static final String CATEGORY_TYPE = "categorytype";
     public static final String IMAGE = "image";
 
+    private String prodID = null;
     private String prodname = null;
     private String prodcalories = null;
     private String prodproducttype = null;
     private String prodcategorytype = null;
     private String prodimage = null;
+    private ProductType tempProductType = null;
+    private ProductType newProductType = null;
+    private CategoryType tempCatType = null;
+    private CategoryType newCategoryType = null;
 
     public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -77,19 +82,23 @@ public class Database extends SQLiteOpenHelper{
     public ArrayList<Product> readProductFromDatabase(){
         ArrayList<Product> products = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_PRODUCTS;// + " WHERE 1";
+        String query = "SELECT * FROM " + TABLE_PRODUCTS;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
         Product product = null;
         while(!cursor.isAfterLast()){
+            prodID = cursor.getString(cursor.getColumnIndex("id"));
             prodname = cursor.getString(cursor.getColumnIndex("name"));
             prodcalories = cursor.getString(cursor.getColumnIndex("calories"));
             prodproducttype = cursor.getString(cursor.getColumnIndex("producttype"));
             prodcategorytype = cursor.getString(cursor.getColumnIndex("categorytype"));
             prodimage = cursor.getString(cursor.getColumnIndex("image"));
 
-            product = new Product(prodname, Integer.valueOf(prodcalories), ProductType.Alcohol, CategoryType.Dinner, Integer.valueOf(prodimage));
+            newProductType = getProductTypeCast(prodproducttype);
+            newCategoryType = getCategoryTypeCast(prodcategorytype);
+
+            product = new Product(Integer.valueOf(prodID), prodname, Integer.valueOf(prodcalories), newProductType, newCategoryType, Integer.valueOf(prodimage));
             products.add(product);
 
             cursor.moveToNext();
@@ -99,8 +108,64 @@ public class Database extends SQLiteOpenHelper{
         return products;
     }
 
-    public void removeFromDatabase(Product productName){//}, int productCalories){
+    public void removeFromDatabase(Product product){//}, int productCalories){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + NAME + "= '" + productName.getName() + "'");
+        db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + NAME + "= '" + product.getName() + "' AND " + ID + "= " + product.getID());
+    }
+
+    public ProductType getProductTypeCast(String productType){
+        switch (productType){
+            case "Alcohol":
+                tempProductType = ProductType.Alcohol;
+                break;
+            case "Bread":
+                tempProductType = ProductType.Bread;
+                break;
+            case "Chicken":
+                tempProductType = ProductType.Chicken;
+                break;
+            case "Dairy":
+                tempProductType = ProductType.Dairy;
+                break;
+            case "Fruit":
+                tempProductType = ProductType.Fruit;
+                break;
+            case "Meat":
+                tempProductType = ProductType.Meat;
+                break;
+            case "Pasta":
+                tempProductType = ProductType.Pasta;
+                break;
+            case "Potatoes":
+                tempProductType = ProductType.Potatoes;
+                break;
+            case "SandwichFilling":
+                tempProductType = ProductType.SandwichFilling;
+                break;
+            case "Snacks":
+                tempProductType = ProductType.Snacks;
+                break;
+            case "Vegetables":
+                tempProductType = ProductType.Vegetables;
+                break;
+        }
+
+        return tempProductType;
+    }
+
+    public CategoryType getCategoryTypeCast(String categoryType){
+        switch (categoryType){
+            case "Breakfast":
+                tempCatType = CategoryType.Breakfast;
+                break;
+            case "Lunch":
+                tempCatType = CategoryType.Lunch;
+                break;
+            case "Dinner":
+                tempCatType = CategoryType.Dinner;
+                break;
+        }
+
+        return tempCatType;
     }
 }

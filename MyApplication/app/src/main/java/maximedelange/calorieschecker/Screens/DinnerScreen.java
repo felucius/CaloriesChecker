@@ -45,7 +45,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
     private ArrayList<Product> products = null;
     private ArrayList<Product> combinedProducts = null;
     private ArrayList<Product> databaseProducts = null;
-    private ArrayList<Product> productHolder = null;
     private TableLayout tableLayout = null;
     private GridLayout gridLayout = null;
     private TableRow tableRow = null;
@@ -155,10 +154,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
 
-                //TableRow.LayoutParams params = (TableRow.LayoutParams)textArray.getLayoutParams();
-                //params.span = 4;
-                //textArray.setLayoutParams(params); // causes layout update
-
                 tableRow.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
                 tableRow.addView(textArray, 1, new TableRow.LayoutParams(200, 500));
                 tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(200, 400));
@@ -189,7 +184,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                             public void onClick(View v) {
                                 Intent intent = new Intent(v.getContext(), DinnerScreen.class);
                                 dialog.dismiss();
-                                //products = productController.getStaticProducts();
                                 products = combinedProducts;
                                 database.removeFromDatabase(product);
                                 products.remove(product);
@@ -245,20 +239,17 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
 
             databaseProducts = database.readProductFromDatabase();
             if(databaseProducts.size() <= 0){
-                showToastMessage("You have no dinner products.\nAdd one in 'Products' page");
+                showToastMessage("You have no products.\nAdd one in 'Products' page");
             }
             combinedProducts.addAll(products);
-
             productController.setStaticProducts(combinedProducts);
 
         }else{
             databaseProducts = database.readProductFromDatabase();
             if(databaseProducts.size() <= 0){
-                showToastMessage("You have no dinner products.\nAdd one in 'Products' page");
+                showToastMessage("You have no products.\nAdd one in 'Products' page");
             }
             combinedProducts.addAll(databaseProducts);
-            //combinedProducts.addAll(productController.getProducts());
-
             productController.setStaticProducts(combinedProducts);
         }
     }

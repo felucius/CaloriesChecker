@@ -13,4 +13,200 @@
     tools:context="maximedelange.calorieschecker.Screens.CaloriesListScreen"
     tools:showIn="@layout/activity_calories_list_screen">
 
+    <Button
+        android:text="Monday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnMonday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="175dp" />
+
+    <Button
+        android:text="Tuesday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnTuesday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/btnMonday"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="175dp" />
+
+    <Button
+        android:text="Wednesday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnWednesday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/btnTuesday"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="175dp" />
+
+    <Button
+        android:text="Thursday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnThursday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/btnWednesday"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="175dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtFriday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnFriday"
+        android:layout_alignBottom="@+id/btnFriday"
+        android:layout_toRightOf="@+id/btnFriday"
+        android:layout_toEndOf="@+id/btnFriday" />
+
+    <Button
+        android:text="Friday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFriday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_width="175dp"
+        android:layout_below="@+id/btnThursday"
+        android:layout_toLeftOf="@+id/txtSaturday"
+        android:layout_toStartOf="@+id/txtSaturday" />
+
+    <Button
+        android:text="Saturday"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSaturday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/btnFriday"
+        android:layout_toLeftOf="@+id/txtSaturday"
+        android:layout_toStartOf="@+id/txtSaturday" />
+
+    <Button
+        android:text="Sunday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSunday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_width="175dp"
+        android:layout_below="@+id/btnSaturday"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTuesday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnTuesday"
+        android:layout_alignBottom="@+id/btnTuesday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtWednesday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnWednesday"
+        android:layout_alignBottom="@+id/btnWednesday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtThursday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnThursday"
+        android:layout_alignBottom="@+id/btnThursday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSaturday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnSaturday"
+        android:layout_alignBottom="@+id/btnSaturday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSunday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_width="175dp"
+        android:layout_alignBaseline="@+id/btnSunday"
+        android:layout_alignBottom="@+id/btnSunday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtMonday"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnMonday"
+        android:layout_alignBottom="@+id/btnMonday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

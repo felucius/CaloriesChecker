@@ -108,7 +108,7 @@ public class Database extends SQLiteOpenHelper{
         return products;
     }
 
-    public void removeFromDatabase(Product product){//}, int productCalories){
+    public void removeFromDatabase(Product product){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + NAME + "= '" + product.getName() + "' AND " + ID + "= " + product.getID());
     }

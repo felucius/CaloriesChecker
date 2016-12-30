@@ -28,17 +28,32 @@ public class Product implements Serializable{
         this.image = image;
     }
 
+    public Product(){}
+
     // Methods
+    public void setName(String name){
+        this.name = name;
+    }
     public String getName(){
         return this.name;
     }
 
+    public void setCalories(int calories){
+        this.calories = calories;
+    }
     public int getCalories(){
         return this.calories;
     }
 
+    public void setProductType(ProductType productType){
+        this.productType = productType;
+    }
     public ProductType getProductType(){
         return this.productType;
+    }
+
+    public void setCategoryType(CategoryType categoryType){
+        this.categoryType = categoryType;
     }
 
     public CategoryType getCategoryType(){
@@ -53,6 +68,9 @@ public class Product implements Serializable{
         this.ID = ID;
     }
 
+    public void setImage(int image){
+        this.image = image;
+    }
     public int getImage(){
         return this.image;
     }

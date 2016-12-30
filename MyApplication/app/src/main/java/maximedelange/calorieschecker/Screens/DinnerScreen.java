@@ -1,5 +1,7 @@
 package maximedelange.calorieschecker.Screens;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,40 +14,59 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
+import maximedelange.calorieschecker.Domain.ProductType;
 import maximedelange.calorieschecker.R;
 
 public class DinnerScreen extends AppCompatActivity implements Serializable{
 
     private ProductController productController = null;
+    private ArrayList<Product> products = null;
+    private ArrayList<Product> combinedProducts = null;
+    private ArrayList<Product> databaseProducts = null;
+    private ArrayList<Product> productHolder = null;
     private TableLayout tableLayout = null;
+    private GridLayout gridLayout = null;
     private TableRow tableRow = null;
     private Bitmap bitmap = null;
     private Bitmap resizedbitmap = null;
     private CalorieCounter calorieCounter = null;
-    private boolean isClicked = false;
-    private ArrayList<Product> products;
+    private Context context = null;
+    private Toast toast = null;
+    private String information = null;
+    private Database database = null;
 
     // GUI Components
     private TextView textArray;
     private TextView textCaloriesArray;
     private TextView textProductArray;
+    private Button dismisspopup;
+    private Button removeproduct;
     private ImageView image;
+
+    private ListView lv;
+    private ArrayList prgmName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +75,52 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        combinedProducts = new ArrayList<>();
+        databaseProducts = new ArrayList<>();
+        database = new Database(this, null, null, 1);
+        Intent intent = getIntent();
+        products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
+        if(products != null){
+            calorieCounter = new CalorieCounter();
+            changeStatusBar(0);
+            getTotalCalories();
+            getTotalProducts();
+            getTableLayoutDinnerProducts();
+        }else{
+            productController = new ProductController();
+            calorieCounter = new CalorieCounter();
+            changeStatusBar(0);
+            getTotalCalories();
+            getTotalProducts();
+            getTableLayoutDinnerProducts();
+        }
+        /*
+        String name[] = new String[products.size()];
+        products.toArray(name);
+        Integer calories[] = new Integer[products.size()];
+        products.toArray(calories);
+
+
         productController = new ProductController();
-        calorieCounter = new CalorieCounter();
-        changeStatusBar(0);
-        getTotalCalories();
-        getTotalProducts();
-        getTableLayoutDinnerProducts();
+        prgmName = productController.getProducts();
+
+        context = this;
+        lv=(ListView) findViewById(R.id.dinnerItemList);
+        lv.setAdapter(new ProductAdapter(this, prgmName));
+        */
     }
 
     public void getTableLayoutDinnerProducts() {
         tableLayout = (TableLayout)findViewById(R.id.tableLayoutDinner);
+        //gridLayout = (GridLayout)findViewById(R.id.gridLayoutDinner);
+        //gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
+        //gridLayout.setColumnCount(2);
+        //gridLayout.setRowCount(3);
+        //TableLayout.LayoutParams newTableLayout = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        //newTableLayout.setMargins(400, 0, 0, 0);
 
         // Creating a table row for each product in productController.
-        for (final Product product : productController.getProducts()) {
+        for (final Product product : combinedProducts) {
             if(product.getCategoryType() == CategoryType.Dinner){
 
                 // Create tablerows
@@ -82,14 +136,16 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
 
                 // Add image for each row
                 image = new ImageView(this);
-                //image.setPadding(100, 100, 100, 100);
 
                 bitmap = BitmapFactory.decodeResource(getResources(), product.getImage());
                 int width=400;
                 int height=400;
                 resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
                 image.setImageBitmap(resizedbitmap);
-                tableRow.addView(image);
+                image.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
+                //image.setBackgroundResource(R.drawable.imagestyle);
+                image.setAdjustViewBounds(true);
+                tableRow.addView(image, 0, new TableRow.LayoutParams(400, 400));
 
                 textArray.setText(product.getName());
                 textCaloriesArray.setText(" Cal: " + String.valueOf(product.getCalories()));
@@ -98,30 +154,70 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                 textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
-                tableRow.addView(textArray);
-                tableRow.addView(textCaloriesArray);
-                tableRow.addView(textProductArray);
 
-                tableRow.setOnClickListener(new View.OnClickListener() {
-                    int colorGreen = getResources().getColor(android.R.color.holo_green_light);
-                    int colorWhite = getResources().getColor(android.R.color.background_light);
+                //TableRow.LayoutParams params = (TableRow.LayoutParams)textArray.getLayoutParams();
+                //params.span = 4;
+                //textArray.setLayoutParams(params); // causes layout update
+
+                tableRow.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
+                tableRow.addView(textArray, 1, new TableRow.LayoutParams(200, 500));
+                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(200, 400));
+                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(200, 400));
+
+                tableRow.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        if(!isClicked){
-                            v.setBackgroundColor(colorGreen);
-                            isClicked = true;
+                    public boolean onLongClick(View v) {
+                        final View background = v;
+                        background.setBackgroundColor(Color.RED);
 
-                            calorieCounter.addCalories(product.getCalories());
-                            changeStatusBar(calorieCounter.getCountcalories());
-                        }
-                        else{
-                            v.setBackgroundColor(colorWhite);
-                            isClicked = false;
-                        }
+                        final Dialog dialog = new Dialog(DinnerScreen.this);
+                        dialog.setContentView(R.layout.popup);
+                        dialog.show();
+
+                        dismisspopup = (Button)dialog.findViewById(R.id.dismissPopup);
+                        dismisspopup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                background.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
+                            }
+                        });
+
+                        removeproduct = (Button)dialog.findViewById(R.id.removeProduct);
+                        removeproduct.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), DinnerScreen.class);
+                                dialog.dismiss();
+                                //products = productController.getStaticProducts();
+                                products = combinedProducts;
+                                database.removeFromDatabase(product);
+                                products.remove(product);
+                                productController.setStaticProducts(products);
+                                productController.getStaticProducts();
+
+                                intent.putExtra("totalProducts", products);
+                                intent.putExtra("totalCalories", String.valueOf(calorieCounter.getCountcalories()));
+                                overridePendingTransition( 0, 0);
+                                startActivity(intent);
+                                overridePendingTransition( 0, 0);
+                                showToastMessage("Product has been removed");
+                            }
+                        });
+
+                        return false;
                     }
                 });
 
-                tableLayout.addView(tableRow, new TableLayout.LayoutParams(200, 200));
+                tableRow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        calorieCounter.addCalories(product.getCalories());
+                        changeStatusBar(calorieCounter.getCountcalories());
+                    }
+                });
+                //gridLayout.addView(tableRow);
+                tableLayout.addView(tableRow,new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
         }
     }
@@ -133,7 +229,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
     }
 
     public void getTotalCalories(){
-        String information = null;
         Intent intent = getIntent();
         information = intent.getStringExtra("totalCalories");
         if(information != null){
@@ -147,8 +242,34 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
-            productController.setProducts(products);
+
+            databaseProducts = database.readProductFromDatabase();
+            if(databaseProducts.size() <= 0){
+                showToastMessage("You have no dinner products.\nAdd one in 'Products' page");
+            }
+            combinedProducts.addAll(products);
+
+            productController.setStaticProducts(combinedProducts);
+
+        }else{
+            databaseProducts = database.readProductFromDatabase();
+            if(databaseProducts.size() <= 0){
+                showToastMessage("You have no dinner products.\nAdd one in 'Products' page");
+            }
+            combinedProducts.addAll(databaseProducts);
+            //combinedProducts.addAll(productController.getProducts());
+
+            productController.setStaticProducts(combinedProducts);
         }
+    }
+
+    public void showToastMessage(String message){
+        context = getApplicationContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_SHORT;
+
+        toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     @Override

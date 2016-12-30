@@ -43,6 +43,10 @@
             android:name=".Screens.ProductScreen"
             android:label="@string/title_activity_product_screen"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Database.DatabaseController"
+            android:label="@string/title_activity_database_controller"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

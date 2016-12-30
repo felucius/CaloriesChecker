@@ -1,7 +1,10 @@
 package maximedelange.calorieschecker.Controllers;
 
+import android.support.v7.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
+import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.Domain.ProductType;
@@ -13,7 +16,8 @@ import maximedelange.calorieschecker.R;
 
 public class ProductController {
     // Fields
-    private ArrayList<Product> products;
+    private ArrayList<Product> products = null;
+    private static ArrayList<Product> staticProducts = null;
     private int amount = 0;
 
     // Constructor
@@ -26,6 +30,14 @@ public class ProductController {
         this.products.add(product);
     }
 
+    public static void setStaticProducts(ArrayList<Product> products){
+        staticProducts = products;
+    }
+
+    public static ArrayList<Product> getStaticProducts(){
+        return staticProducts;
+    }
+
     public ArrayList<Product> getProducts(){
         return this.products;
     }
@@ -35,8 +47,9 @@ public class ProductController {
     }
 
     public ArrayList<Product> createProductData(){
-        this.products = new ArrayList<>();
 
+        /*
+        this.products = new ArrayList<>();
         products.add(new Product("Bun", 120, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bun));
         products.add(new Product("Slice bread", 100, ProductType.Bread, CategoryType.Breakfast, R.mipmap.bread));
         products.add(new Product("Beer", 150, ProductType.Alcohol, CategoryType.Dinner, R.mipmap.beerdark));
@@ -60,6 +73,9 @@ public class ProductController {
         products.add(new Product("Orange", 100, ProductType.Fruit, CategoryType.Lunch, R.mipmap.orange));
         products.add(new Product("Chicken", 100, ProductType.Chicken, CategoryType.Dinner, R.mipmap.chicken));
 
+
         return products;
+        */
+        return null;
     }
 }

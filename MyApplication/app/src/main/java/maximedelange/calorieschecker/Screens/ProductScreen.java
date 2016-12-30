@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,19 +16,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.Adapter;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
-import maximedelange.calorieschecker.Domain.Category;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.Domain.ProductType;
@@ -39,6 +35,7 @@ import maximedelange.calorieschecker.R;
 public class ProductScreen extends AppCompatActivity implements Serializable{
 
     // Field
+    ArrayList<Product> databaseProducts = new ArrayList<>();
     private ProductController productController = null;
     private CalorieCounter calorieCounter = null;
     private ArrayList<Product> products;
@@ -50,6 +47,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     int productTempValue;
     private Context context;
     private Toast toast;
+    private Database database;
 
     // GUI Components
     private Button btnAddNewProduct;
@@ -76,9 +74,10 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        database = new Database(this, null, null, 1);
         productController = new ProductController();
         calorieCounter = new CalorieCounter();
-        changeStatusBar(productController.getProducts().size());
+        //changeStatusBar(productController.getStaticProducts().size());
         getTotalCalories();
         getTotalProducts();
         initializeDropDownCategoryMenu();
@@ -89,7 +88,6 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         getSelectedItem();
         getSelectedCategory();
         getSelectedProductType();
-
     }
 
     public void changeStatusBar(int amountOfProducts){
@@ -114,7 +112,8 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         if(products != null){
             changeStatusBar(Integer.valueOf(products.size()));
         }else{
-            changeStatusBar(productController.getProducts().size());
+            products = database.readProductFromDatabase();
+            changeStatusBar(products.size());
         }
     }
 
@@ -137,11 +136,12 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                 if(products != null){
                     if(!productName.getText().toString().equals("") && !productCalories.getText().toString().equals("")
                             && prodHolder != null && catHolder != null && holder != 0){
-                        products.add(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+
+                        // SQLITE DATABASE
+                        database.addProductToDatabase(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
                                 prodHolder,
                                 catHolder, holder));
-
-                        productController.setProducts(products);
+                        products = database.readProductFromDatabase();
                         changeStatusBar(products.size());
 
                         getToastMessage("Added new product");
@@ -153,14 +153,13 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                 }else{
                     if(!productName.getText().toString().equals("") && !productCalories.getText().toString().equals("")
                             && prodHolder != null && catHolder != null && holder != 0){
-                        System.out.println("PRODUCT NAME: " + productName);
-                        productController.addProduct(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
+
+                        // SQLITE DATABASE
+                        database.addProductToDatabase(new Product(productName.getText().toString(), Integer.parseInt(productCalories.getText().toString()),
                                 prodHolder,
                                 catHolder, holder));
-
-                        products = productController.getProducts();
-                        productController.setProducts(products);
-                        changeStatusBar(productController.getProducts().size());
+                        products = database.readProductFromDatabase();
+                        changeStatusBar(products.size());
 
                         getToastMessage("Added new product");
                     }else{
@@ -469,3 +468,4 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         // Disables the button back press
     }
 }
+

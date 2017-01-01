@@ -5,7 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import maximedelange.calorieschecker.Domain.CategoryType;
@@ -20,8 +25,9 @@ public class Database extends SQLiteOpenHelper{
 
     // Fields
     private final static int DATABASE_VERSION = 1;
-    private final static String DATABASE_NAME = "product.db";
-    public static final String TABLE_PRODUCTS = "products";
+    // Table products
+    private final static String DATABASE_NAME = "calorieapp.db";//"product.db";
+    public static final String TABLE_PRODUCTS = "product";
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String CALORIES = "calories";
@@ -29,6 +35,13 @@ public class Database extends SQLiteOpenHelper{
     public static final String CATEGORY_TYPE = "categorytype";
     public static final String IMAGE = "image";
 
+    // Table Calories
+    public static final String TABLE_CALORIES = "calories";
+    public static final String CALID = "id";
+    public static final String AMOUNT_OF_CALORIES = "amountOfcalories";
+    public static final String DAY_OF_THE_WEEK = "dayoftheweek";
+
+    // Table product fields
     private String prodID = null;
     private String prodname = null;
     private String prodcalories = null;
@@ -40,30 +53,75 @@ public class Database extends SQLiteOpenHelper{
     private CategoryType tempCatType = null;
     private CategoryType newCategoryType = null;
 
+    // Table Calories fields
+    private String calID = null;
+    private String dayoftheweek = null;
+    private String totalCalories = null;
+
     public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        System.out.println("DATABASE PATH: " + context.getDatabasePath("product.db"));
+        System.out.println("DATABASE PATH: " + context.getDatabasePath("calorieapp.db"));
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         System.out.println(db.isOpen());
 
-        String query = "create table " + TABLE_PRODUCTS + "(" +
-                ID + " integer primary key auto increment" +
-                NAME + " text " +
-                CALORIES + " text " +
-                PRODUCT_TYPE + " text " +
-                CATEGORY_TYPE + " text " +
+        String create_table_products = "create table " + TABLE_PRODUCTS + "(" +
+                ID + " integer primary key autoincrement, " +
+                NAME + " text, " +
+                CALORIES + " text, " +
+                PRODUCT_TYPE + " text, " +
+                CATEGORY_TYPE + " text, " +
                 IMAGE+ " text " +
                 ");";
-        db.execSQL(query);
+        db.execSQL(create_table_products);
+
+        String create_table_calories = "create table " + TABLE_CALORIES + "(" +
+                CALID + " integer primary key autoincrement, " +
+                AMOUNT_OF_CALORIES + " text, " +
+                DAY_OF_THE_WEEK + " text " +
+                ");";
+        db.execSQL(create_table_calories);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + TABLE_PRODUCTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALORIES);
         onCreate(db);
+    }
+
+    public void addCaloriesOfDayToDatabase(int calories, int day){
+        ContentValues values = new ContentValues();
+        values.put(AMOUNT_OF_CALORIES, calories);
+        values.put(DAY_OF_THE_WEEK, day);
+
+        SQLiteDatabase db = getWritableDatabase();
+        //db.insert(TABLE_CALORIES, null, values);
+        db.update(TABLE_CALORIES, values, "dayoftheweek="+day, null);
+        db.close();
+    }
+
+    public int readCaloriesFromDatabase(int day){
+        int newTotalCalories = 0;
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CALORIES + " WHERE " + DAY_OF_THE_WEEK + "= " + day;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()){
+            totalCalories = cursor.getString(cursor.getColumnIndex("amountOfcalories"));
+            dayoftheweek = cursor.getString(cursor.getColumnIndex("dayoftheweek"));
+
+            cursor.moveToNext();
+        }
+
+        newTotalCalories = Integer.valueOf(totalCalories);
+
+        db.close();
+        return newTotalCalories;
     }
 
     public void addProductToDatabase(Product product){

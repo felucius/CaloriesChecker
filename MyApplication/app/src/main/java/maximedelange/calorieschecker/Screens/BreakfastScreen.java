@@ -30,11 +30,15 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
+import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.Domain.ProductType;
 import maximedelange.calorieschecker.R;
@@ -55,6 +59,8 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     private Toast toast;
     private String information = null;
     private Database database = null;
+    private int day;
+    private int totalCalories;
 
     // GUI Components
     private TextView textArray;
@@ -63,6 +69,11 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     private Button dismisspopup;
     private Button removeproduct;
     private ImageView image;
+
+    // Time
+    Date date = new Date();
+    private Calendar calendar;
+    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +85,27 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         combinedProducts = new ArrayList<>();
         databaseProducts = new ArrayList<>();
         database = new Database(this, null, null, 1);
+
+        // Check time. Store calories at 00:00 for the given day.
+        calendar = GregorianCalendar.getInstance();
+        System.out.println("CURRENT MONTH: " + date.getMonth());
+        calendar.setTime(date);
+        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+        totalCalories = database.readCaloriesFromDatabase(day);
+
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
             calorieCounter = new CalorieCounter();
-            changeStatusBar(0);
+            changeStatusBar(totalCalories);
             getTotalCalories();
             getTotalProducts();
             getTableLayoutBreakfastProducts();
         }else{
             productController = new ProductController();
             calorieCounter = new CalorieCounter();
-            changeStatusBar(0);
+            changeStatusBar(totalCalories);
             getTotalCalories();
             getTotalProducts();
             getTableLayoutBreakfastProducts();
@@ -195,7 +215,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
 
     public void changeStatusBar(int calories){
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Total calories: " + calories);
+        actionBar.setTitle("Total calories: "+ calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
     }
 
@@ -205,7 +225,11 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         if(information != null){
             System.out.println("INFORMATION RETRIEVED" + information);
             calorieCounter.addCalories(Integer.valueOf(information));
+            calorieCounter.setCountcalories(totalCalories);
             changeStatusBar(Integer.valueOf(information));
+        }else{
+            calorieCounter.setCountcalories(totalCalories);
+            changeStatusBar(Integer.valueOf(totalCalories));
         }
     }
 
@@ -253,8 +277,12 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         switch (item.getItemId()) {
             case R.id.action_back:
                 Intent intent = new Intent(this.getApplicationContext(), CategoryScreen.class);
+                //calorieCounter.setCountcalories(totalCalories);
                 intent.putExtra("totalCalories", String.valueOf(calorieCounter.getCountcalories()));
                 intent.putExtra("totalProducts", products);
+
+                // Add current calories to database.
+                database.addCaloriesOfDayToDatabase(calorieCounter.getCountcalories(), day);
                 startActivity(intent);
                 return true;
             default:

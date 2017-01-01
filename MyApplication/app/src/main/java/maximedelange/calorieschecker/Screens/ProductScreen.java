@@ -128,7 +128,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                products                                                                                           = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
+                products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
 
                 int holder = newImage();
                 CategoryType catHolder = newCategory();

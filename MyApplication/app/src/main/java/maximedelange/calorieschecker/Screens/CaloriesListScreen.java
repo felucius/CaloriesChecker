@@ -23,10 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
+import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -44,16 +48,30 @@ public class CaloriesListScreen extends AppCompatActivity {
     private CalorieCounter calorieCounter = null;
     private Context context = null;
     private Toast toast = null;
-    private String information = null;
     private Database database = null;
+    private String information = null;
+    private int day;
 
     // GUI Components
-    private TextView textArray;
-    private TextView textCaloriesArray;
-    private TextView textProductArray;
-    private Button dismisspopup;
-    private Button removeproduct;
-    private ImageView image;
+    private TextView txtDayMonday;
+    private TextView txtDayTuesday;
+    private TextView txtDayWednesdag;
+    private TextView txtDayThursday;
+    private TextView txtDayFriday;
+    private TextView txtDaySaturday;
+    private TextView txtDaySunday;
+    private TextView txtDate1;
+    private TextView txtDate2;
+    private TextView txtDate3;
+    private TextView txtDate4;
+    private TextView txtDate5;
+    private TextView txtDate6;
+    private TextView txtDate7;
+
+    // Time
+    Date date = new Date();
+    private Calendar calendar;
+    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +83,31 @@ public class CaloriesListScreen extends AppCompatActivity {
         combinedProducts = new ArrayList<>();
         databaseProducts = new ArrayList<>();
         database = new Database(this, null, null, 1);
+
+        // Check time. Store calories at 00:00 for the given day.
+        calendar = GregorianCalendar.getInstance();
+        System.out.println("CURRENT MONTH: " + date.getMonth());
+        calendar.setTime(date);
+        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+        int totalCalories = database.readCaloriesFromDatabase(day);
+
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
             calorieCounter = new CalorieCounter();
-            changeStatusBar(0);
+            changeStatusBar(totalCalories);
             getTotalCalories();
             getTotalProducts();
         }else{
             productController = new ProductController();
             calorieCounter = new CalorieCounter();
-            changeStatusBar(0);
+            changeStatusBar(totalCalories);
             getTotalCalories();
             getTotalProducts();
         }
+
+        checkTime();
     }
 
     public void changeStatusBar(int calories){
@@ -88,7 +117,6 @@ public class CaloriesListScreen extends AppCompatActivity {
     }
 
     public void getTotalCalories(){
-        String information = null;
         Intent intent = getIntent();
         information = intent.getStringExtra("totalCalories");
         if(information != null){
@@ -102,7 +130,6 @@ public class CaloriesListScreen extends AppCompatActivity {
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
         if(products != null){
-
             databaseProducts = database.readProductFromDatabase();
             combinedProducts.addAll(products);
             productController.setStaticProducts(combinedProducts);
@@ -111,6 +138,84 @@ public class CaloriesListScreen extends AppCompatActivity {
             databaseProducts = database.readProductFromDatabase();
             combinedProducts.addAll(databaseProducts);
             productController.setStaticProducts(combinedProducts);
+        }
+    }
+
+    public void checkTime(){
+        txtDate1 = (TextView)findViewById(R.id.txtmondayDate);
+        txtDate2 = (TextView)findViewById(R.id.txttuesdayDate);
+        txtDate3 = (TextView)findViewById(R.id.txtwednesdayDate);
+        txtDate4 = (TextView)findViewById(R.id.txtthursdayDate);
+        txtDate5 = (TextView)findViewById(R.id.txtfridayDate);
+        txtDate6 = (TextView)findViewById(R.id.txtsaturdayDate);
+        txtDate7 = (TextView)findViewById(R.id.txtsundayDate);
+        txtDayMonday = (TextView)findViewById(R.id.txtMonday);
+        txtDayTuesday = (TextView)findViewById(R.id.txtTuesday);
+        txtDayWednesdag = (TextView)findViewById(R.id.txtWednesday);
+        txtDayThursday = (TextView)findViewById(R.id.txtThursday);
+        txtDayFriday = (TextView)findViewById(R.id.txtFriday);
+        txtDaySaturday = (TextView)findViewById(R.id.txtSaturday);
+        txtDaySunday = (TextView)findViewById(R.id.txtSunday);
+
+        // Check time. Store calories at 00:00 for the given day.
+        //calendar = GregorianCalendar.getInstance();
+        //System.out.println("CURRENT MONTH: " + date.getMonth());
+        //calendar.setTime(date);
+        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
+
+        //int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        if(information == null){
+            information = String.valueOf(0);
+        }
+
+        int totalCalories = database.readCaloriesFromDatabase(day);
+        information = String.valueOf(totalCalories);
+
+        txtDate1.setText("n/a");
+        txtDate2.setText("n/a");
+        txtDate3.setText("n/a");
+        txtDate4.setText("n/a");
+        txtDate5.setText("n/a");
+        txtDate6.setText("n/a");
+        txtDate7.setText("n/a");
+        txtDayMonday.setText(String.valueOf(0));
+        txtDayTuesday.setText(String.valueOf(0));
+        txtDayWednesdag.setText(String.valueOf(0));
+        txtDayThursday.setText(String.valueOf(0));
+        txtDayFriday.setText(String.valueOf(0));
+        txtDaySaturday.setText(String.valueOf(0));
+        txtDaySunday.setText(String.valueOf(0));
+
+        switch (day){
+            case 2:
+                txtDate1.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDayMonday.setText(information);
+                break;
+            case 3:
+                txtDate2.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDayTuesday.setText(information);
+                break;
+            case 4:
+                txtDate3.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDayWednesdag.setText(information);
+                break;
+            case 5:
+                txtDate4.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDayThursday.setText(information);
+                break;
+            case 6:
+                txtDate5.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDayFriday.setText(information);
+                break;
+            case 7:
+                txtDate6.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDaySaturday.setText(information);
+                break;
+            case 1:
+                txtDate7.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "/" + calendar.get(Calendar.MONTH));
+                txtDaySunday.setText(information);
+                break;
         }
     }
 

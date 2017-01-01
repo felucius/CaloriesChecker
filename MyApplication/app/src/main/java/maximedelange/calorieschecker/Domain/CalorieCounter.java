@@ -1,5 +1,8 @@
 package maximedelange.calorieschecker.Domain;
 
+import maximedelange.calorieschecker.Database.Database;
+import maximedelange.calorieschecker.Screens.CategoryScreen;
+
 /**
  * Created by M on 12/15/2016.
  */

@@ -25,7 +25,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_width="175dp" />
+        android:enabled="false"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp" />
 
     <Button
         android:text="Tuesday"
@@ -39,7 +41,9 @@
         android:layout_below="@+id/btnMonday"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_width="175dp" />
+        android:enabled="false"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp" />
 
     <Button
         android:text="Wednesday"
@@ -53,7 +57,148 @@
         android:layout_below="@+id/btnTuesday"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_width="175dp" />
+        android:enabled="false"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp"
+        android:layout_alignRight="@+id/btnTuesday"
+        android:layout_alignEnd="@+id/btnTuesday" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTuesday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnTuesday"
+        android:layout_alignBottom="@+id/btnTuesday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtWednesday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnWednesday"
+        android:layout_alignBottom="@+id/btnWednesday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtThursday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnThursday"
+        android:layout_alignBottom="@+id/btnThursday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSaturday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnSaturday"
+        android:layout_alignBottom="@+id/btnSaturday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSunday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnSunday"
+        android:layout_alignBottom="@+id/btnSunday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtMonday"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/btnMonday"
+        android:layout_alignBottom="@+id/btnMonday"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtMonday"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/txtmondayDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtTuesday"
+        android:layout_alignLeft="@+id/txtmondayDate"
+        android:layout_alignStart="@+id/txtmondayDate"
+        android:id="@+id/txttuesdayDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtwednesdayDate"
+        android:layout_alignBottom="@+id/txtWednesday"
+        android:layout_alignLeft="@+id/txttuesdayDate"
+        android:layout_alignStart="@+id/txttuesdayDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtThursday"
+        android:layout_alignLeft="@+id/txtwednesdayDate"
+        android:layout_alignStart="@+id/txtwednesdayDate"
+        android:id="@+id/txtthursdayDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtFriday"
+        android:layout_alignRight="@+id/txtthursdayDate"
+        android:layout_alignEnd="@+id/txtthursdayDate"
+        android:id="@+id/txtfridayDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtSaturday"
+        android:layout_alignLeft="@+id/txtfridayDate"
+        android:layout_alignStart="@+id/txtfridayDate"
+        android:id="@+id/txtsaturdayDate" />
 
     <Button
         android:text="Thursday"
@@ -65,51 +210,11 @@
         android:textSize="20sp"
         android:textAllCaps="false"
         android:layout_below="@+id/btnWednesday"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_width="175dp" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtFriday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnFriday"
-        android:layout_alignBottom="@+id/btnFriday"
-        android:layout_toRightOf="@+id/btnFriday"
-        android:layout_toEndOf="@+id/btnFriday" />
-
-    <Button
-        android:text="Friday"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnFriday"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#051dba"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:layout_width="175dp"
-        android:layout_below="@+id/btnThursday"
-        android:layout_toLeftOf="@+id/txtSaturday"
-        android:layout_toStartOf="@+id/txtSaturday" />
-
-    <Button
-        android:text="Saturday"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSaturday"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#051dba"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:layout_below="@+id/btnFriday"
-        android:layout_toLeftOf="@+id/txtSaturday"
-        android:layout_toStartOf="@+id/txtSaturday" />
+        android:layout_alignLeft="@+id/btnFriday"
+        android:enabled="false"
+        android:layout_alignStart="@+id/btnFriday"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp" />
 
     <Button
         android:text="Sunday"
@@ -120,93 +225,66 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:textAllCaps="false"
-        android:layout_width="175dp"
         android:layout_below="@+id/btnSaturday"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:enabled="false"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp" />
+
+    <Button
+        android:text="Saturday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSaturday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textAlignment="viewStart"
+        android:layout_below="@+id/btnFriday"
+        android:enabled="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="130dp" />
+
+    <Button
+        android:text="Friday"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFriday"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#051dba"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textAlignment="viewStart"
+        android:layout_width="130dp"
+        android:layout_below="@+id/btnThursday"
+        android:layout_alignParentLeft="true"
+        android:enabled="false"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:id="@+id/txtTuesday"
-        android:textAlignment="center"
+        android:id="@+id/txtFriday"
+        android:textAlignment="textEnd"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnTuesday"
-        android:layout_alignBottom="@+id/btnTuesday"
+        android:layout_alignBaseline="@+id/btnFriday"
+        android:layout_alignBottom="@+id/btnFriday"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_width="130dp" />
 
     <TextView
         android:text="TextView"
-        android:layout_width="175dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtWednesday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnWednesday"
-        android:layout_alignBottom="@+id/btnWednesday"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtThursday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnThursday"
-        android:layout_alignBottom="@+id/btnThursday"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtSaturday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnSaturday"
-        android:layout_alignBottom="@+id/btnSaturday"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtSunday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_width="175dp"
-        android:layout_alignBaseline="@+id/btnSunday"
-        android:layout_alignBottom="@+id/btnSunday"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtMonday"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignBaseline="@+id/btnMonday"
-        android:layout_alignBottom="@+id/btnMonday"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/txtsundayDate"
+        android:layout_alignBottom="@+id/txtSunday"
+        android:layout_alignLeft="@+id/txtsaturdayDate"
+        android:layout_alignStart="@+id/txtsaturdayDate" />
 
 </RelativeLayout>

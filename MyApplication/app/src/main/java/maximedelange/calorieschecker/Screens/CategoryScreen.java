@@ -18,9 +18,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
+import maximedelange.calorieschecker.Database.Database;
+import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -32,19 +42,25 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     private String calorieInformation;
     private String productInformation;
     private ProductController productController;
+    private Database database;
     @SuppressWarnings("unchecked")
     private ArrayList<Product> products;
+    private int totalCalories;
+    private int day;
 
     // GUI Components
-    private Button btnCategory;
     private Button breakfastImage;
     private Button lunchImage;
     private Button dinnerImage;
     private Button caloriesListImage;
     private Button productImage;
     private Button dismisspopup;
-    private Button removeproduct;
     private ActionBar actionBar;
+
+    // Time
+    Date date = new Date();
+    private Calendar calendar;
+    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +69,23 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        database = new Database(this, null, null, 1);
+
+        // Check time. Store calories at 00:00 for the given day.
+        calendar = GregorianCalendar.getInstance();
+        System.out.println("CURRENT MONTH: " + date.getMonth());
+        calendar.setTime(date);
+        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+        totalCalories = database.readCaloriesFromDatabase(day);
+
         productController = new ProductController();
         goToBreakfast();
         goToLunch();
         goToDinner();
         goToProductList();
         goToCaloriesList();
-        changeStatusBar(0);
+        changeStatusBar(totalCalories);
         getCalorieInformation();
         getProductInformation();
     }

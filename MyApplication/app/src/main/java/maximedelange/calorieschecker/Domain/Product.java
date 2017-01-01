@@ -17,6 +17,7 @@ public class Product implements Serializable{
     private ProductType productType;
     private CategoryType categoryType;
     private int image;
+    private int totalCalories;
 
     // Constructor
     public Product(int ID, String name, int calories, ProductType productType, CategoryType categoryType, int image){
@@ -73,6 +74,14 @@ public class Product implements Serializable{
     }
     public int getImage(){
         return this.image;
+    }
+
+    public void setTotalCalories(int totalCalories){
+        this.totalCalories = totalCalories;
+    }
+
+    public int getTotalCalories(){
+        return this.totalCalories;
     }
 
     @Override

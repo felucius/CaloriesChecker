@@ -10,15 +10,10 @@
     <string-array name="Product_array">
         <item>choose a product</item>
         <item>Alcohol</item>
-        <item>Bread</item>
-        <item>Chicken</item>
-        <item>Dairy</item>
-        <item>Fruit</item>
-        <item>Meat</item>
-        <item>Pasta</item>
-        <item>Potatoes</item>
-        <item>SandwichFilling</item>
-        <item>Snacks</item>
         <item>Vegetables</item>
+        <item>Dairy</item>
+        <item>Grains</item>
+        <item>Fruits</item>
+        <item>Proteins</item>
     </string-array>
 </resources>

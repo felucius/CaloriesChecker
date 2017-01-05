@@ -37,16 +37,14 @@ import maximedelange.calorieschecker.R;
 public class CategoryScreen extends AppCompatActivity implements Serializable {
 
     // Fields
-    private Bitmap bitmap;
-    private Bitmap resizedbitmap;
     private String calorieInformation;
-    private String productInformation;
     private ProductController productController;
     private Database database;
     @SuppressWarnings("unchecked")
     private ArrayList<Product> products;
     private int totalCalories;
-    private int day;
+    private String day;
+    private int currentDay;
 
     // GUI Components
     private Button breakfastImage;
@@ -60,7 +58,6 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
     // Time
     Date date = new Date();
     private Calendar calendar;
-    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +68,13 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
 
         database = new Database(this, null, null, 1);
 
-        // Check time. Store calories at 00:00 for the given day.
         calendar = GregorianCalendar.getInstance();
         System.out.println("CURRENT MONTH: " + date.getMonth());
         calendar.setTime(date);
-        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
-        day = calendar.get(Calendar.DAY_OF_WEEK);
-        totalCalories = database.readCaloriesFromDatabase(day);
+
+        currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+        day = database.getDateTime();
+        totalCalories = database.readCaloriesFromDatabase(day, currentDay);
 
         productController = new ProductController();
         goToBreakfast();
@@ -181,8 +178,6 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
 
     public void getProductInformation(){
         Intent intent = getIntent();
-        //productInformation = intent.getStringExtra("totalProducts");
-
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
 
         if(products != null){

@@ -9,16 +9,15 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -40,7 +39,6 @@ import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
-import maximedelange.calorieschecker.Domain.ProductType;
 import maximedelange.calorieschecker.R;
 
 public class DinnerScreen extends AppCompatActivity implements Serializable{
@@ -50,7 +48,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
     private ArrayList<Product> combinedProducts = null;
     private ArrayList<Product> databaseProducts = null;
     private TableLayout tableLayout = null;
-    private GridLayout gridLayout = null;
     private TableRow tableRow = null;
     private Bitmap bitmap = null;
     private Bitmap resizedbitmap = null;
@@ -59,7 +56,7 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
     private Toast toast = null;
     private String information = null;
     private Database database = null;
-    private int day;
+    private int currentDay;
     private int totalCalories;
 
     // GUI Components
@@ -70,13 +67,9 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
     private Button removeproduct;
     private ImageView image;
 
-    private ListView lv;
-    private ArrayList prgmName;
-
     // Time
     Date date = new Date();
     private Calendar calendar;
-    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +82,14 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
         databaseProducts = new ArrayList<>();
         database = new Database(this, null, null, 1);
 
-        // Check time. Store calories at 00:00 for the given day.
         calendar = GregorianCalendar.getInstance();
         System.out.println("CURRENT MONTH: " + date.getMonth());
         calendar.setTime(date);
-        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
-        day = calendar.get(Calendar.DAY_OF_WEEK);
-        totalCalories = database.readCaloriesFromDatabase(day);
+
+        currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+
+        String day = database.getDateTime();
+        totalCalories = database.readCaloriesFromDatabase(day, currentDay);
 
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
@@ -113,30 +107,10 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
             getTotalProducts();
             getTableLayoutDinnerProducts();
         }
-        /*
-        String name[] = new String[products.size()];
-        products.toArray(name);
-        Integer calories[] = new Integer[products.size()];
-        products.toArray(calories);
-
-
-        productController = new ProductController();
-        prgmName = productController.getProducts();
-
-        context = this;
-        lv=(ListView) findViewById(R.id.dinnerItemList);
-        lv.setAdapter(new ProductAdapter(this, prgmName));
-        */
     }
 
     public void getTableLayoutDinnerProducts() {
         tableLayout = (TableLayout)findViewById(R.id.tableLayoutDinner);
-        //gridLayout = (GridLayout)findViewById(R.id.gridLayoutDinner);
-        //gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
-        //gridLayout.setColumnCount(2);
-        //gridLayout.setRowCount(3);
-        //TableLayout.LayoutParams newTableLayout = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        //newTableLayout.setMargins(400, 0, 0, 0);
 
         // Creating a table row for each product in productController.
         for (final Product product : combinedProducts) {
@@ -162,22 +136,21 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                 resizedbitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
                 image.setImageBitmap(resizedbitmap);
                 image.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
-                //image.setBackgroundResource(R.drawable.imagestyle);
                 image.setAdjustViewBounds(true);
                 tableRow.addView(image, 0, new TableRow.LayoutParams(400, 400));
 
                 textArray.setText(product.getName());
-                textCaloriesArray.setText(" Cal: " + String.valueOf(product.getCalories()));
-                textProductArray.setText(" Prod: " + String.valueOf(product.getProductType()));
+                textCaloriesArray.setText(" Cal:\n " + String.valueOf(product.getCalories()));
+                textProductArray.setText(" Prod:\n " + String.valueOf(product.getProductType()));
                 textArray.setTextSize(18);
                 textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
 
                 tableRow.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
-                tableRow.addView(textArray, 1, new TableRow.LayoutParams(200, 500));
-                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(200, 400));
-                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(200, 400));
+                tableRow.addView(textArray, 1, new TableRow.LayoutParams(300, 500));
+                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(100, 200));
+                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(250, 200));
 
                 tableRow.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -186,7 +159,7 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                         background.setBackgroundColor(Color.RED);
 
                         final Dialog dialog = new Dialog(DinnerScreen.this);
-                        dialog.setContentView(R.layout.popup);
+                        dialog.setContentView(R.layout.popup_removeproduct);
                         dialog.show();
 
                         dismisspopup = (Button)dialog.findViewById(R.id.dismissPopup);
@@ -205,7 +178,7 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                                 Intent intent = new Intent(v.getContext(), DinnerScreen.class);
                                 dialog.dismiss();
                                 products = combinedProducts;
-                                database.removeFromDatabase(product);
+                                database.removeProductFromDatabase(product);
                                 products.remove(product);
                                 productController.setStaticProducts(products);
                                 productController.getStaticProducts();
@@ -230,7 +203,6 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                         changeStatusBar(calorieCounter.getCountcalories());
                     }
                 });
-                //gridLayout.addView(tableRow);
                 tableLayout.addView(tableRow,new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
         }
@@ -284,6 +256,15 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
         int duration = Toast.LENGTH_SHORT;
 
         toast = Toast.makeText(context, text, duration);
+
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        ViewGroup group = (ViewGroup) toast.getView();
+        group.setBackgroundResource(R.drawable.toastmessage);
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setTextColor(Color.RED);
+        messageTextView.setTypeface(null, Typeface.BOLD);
+        messageTextView.setTextSize(25);
+
         toast.show();
     }
 
@@ -309,7 +290,7 @@ public class DinnerScreen extends AppCompatActivity implements Serializable{
                 intent.putExtra("totalProducts", products);
 
                 // Add current calories to database.
-                database.addCaloriesOfDayToDatabase(calorieCounter.getCountcalories(), day);
+                database.insertCaloriesOfDayToDatabase(calorieCounter.getCountcalories(), currentDay, database.getDateTime(), "true");
                 startActivity(intent);
                 return true;
             default:

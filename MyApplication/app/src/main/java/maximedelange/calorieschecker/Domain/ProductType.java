@@ -5,15 +5,10 @@ package maximedelange.calorieschecker.Domain;
  */
 
 public enum ProductType {
-    Snacks,
-    Dairy,
-    Bread,
     Alcohol,
-    SandwichFilling,
-    Fruit,
     Vegetables,
-    Potatoes,
-    Meat,
-    Chicken,
-    Pasta
+    Dairy,
+    Grains,
+    Fruits,
+    Proteins
 }

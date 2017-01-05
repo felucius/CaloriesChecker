@@ -3,15 +3,18 @@ package maximedelange.calorieschecker.Screens;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,14 +62,20 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     private EditText productCalories;
     private String[] foods = {"choose an image", "apple", "baguette", "banana", "beerdark", "beerlight", "bread", "bun",
             "cheese", "chicken", "chocolatespread", "croissant", "cucumber", "dessert",
-            "ham", "hamburger", "lettuce", "milk", "orange", "pancakes", "peanutbutter", "pizza", "potato",
-            "snacks", "spagetti", "steak", "tomato", "vegetable", "wheat", "yogurt"};
-    private int images[] = {R.mipmap.stockimage, R.mipmap.apple, R.mipmap.baguette, R.mipmap.banana, R.mipmap.beerdark,
+            "ham", "hamburger", "lettuce", "milk", "orange", "pancakes", "peanutbutter", "pizza", "fries",
+            "snacks", "spagetti", "steak", "tomato", "broccoli", "wheat", "yogurt", "hotdog", "avocado", "corn",
+            "eggplant", "fish", "grape", "juice", "pear", "popcorn", "rice", "salad", "wine", "tuna", "potato",
+            "egg", "cabbage", "carrot", "nuts", "melon", "bellpepper", "beans", "sausage", "pineapple"};
+    private int images[] = {R.mipmap.stockimage, R.mipmap.apples, R.mipmap.baguette, R.mipmap.banana, R.mipmap.beerdark,
             R.mipmap.beerlight, R.mipmap.bread, R.mipmap.bun, R.mipmap.cheese, R.mipmap.chicken,
             R.mipmap.chocolatespread, R.mipmap.croissant, R.mipmap.cucumber, R.mipmap.dessert,
             R.mipmap.ham, R.mipmap.hamburger, R.mipmap.lettuce, R.mipmap.milk, R.mipmap.orange,
             R.mipmap.pancakes, R.mipmap.peanutbutter, R.mipmap.pizza, R.mipmap.potato, R.mipmap.snacks,
-            R.mipmap.spagetti, R.mipmap.steak, R.mipmap.tomato, R.mipmap.vegetable, R.mipmap.wheat, R.mipmap.yogurt};
+            R.mipmap.spagetti, R.mipmap.steak, R.mipmap.tomato, R.mipmap.vegetable, R.mipmap.wheat, R.mipmap.yogurt,
+            R.mipmap.hotdog, R.mipmap.avocado, R.mipmap.corn, R.mipmap.eggplant, R.mipmap.fish,
+            R.mipmap.grape, R.mipmap.juice, R.mipmap.pear, R.mipmap.popcorn, R.mipmap.rice, R.mipmap.salad, R.mipmap.wine,
+            R.mipmap.tuna, R.mipmap.potato, R.mipmap.egg, R.mipmap.cabbage, R.mipmap.carrot,
+            R.mipmap.nuts, R.mipmap.melon, R.mipmap.bellpepper, R.mipmap.beans, R.mipmap.sausage, R.mipmap.pineapple};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,10 +155,10 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                         productCounter++;
                         changeStatusBar(products.size());
 
-                        getToastMessage("Added new product");
+                        showToastMessage("Added new product");
                     }else{
                         if(productName.getText().toString().equals("") || productCalories.getText().toString().equals("")){
-                            getToastMessage("Cannot add an empty 'name' or amount of 'calories'");
+                            showToastMessage("Cannot add an empty 'name' or amount of 'calories'");
                         }
                     }
                 }else{
@@ -164,10 +173,10 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                         products = database.readProductFromDatabase();
                         changeStatusBar(products.size());
 
-                        getToastMessage("Added new product");
+                        showToastMessage("Added new product");
                     }else{
                         if(productName.getText().toString().equals("") || productCalories.getText().toString().equals("")){
-                            getToastMessage("Cannot add an empty 'name' or amount of 'calories'");
+                            showToastMessage("Cannot add an empty 'name' or amount of 'calories'");
                         }
                     }
                 }
@@ -251,12 +260,21 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         dropDownImages.setAdapter(adapter);
     }
 
-    public void getToastMessage(String message){
+    public void showToastMessage(String message){
         context = getApplicationContext();
         CharSequence text = message;
         int duration = Toast.LENGTH_SHORT;
 
         toast = Toast.makeText(context, text, duration);
+
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        ViewGroup group = (ViewGroup) toast.getView();
+        group.setBackgroundResource(R.drawable.toastmessage);
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setTextColor(Color.RED);
+        messageTextView.setTypeface(null, Typeface.BOLD);
+        messageTextView.setTextSize(16);
+
         toast.show();
     }
 
@@ -276,7 +294,6 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                 else{
                     text.setTextColor(Color.parseColor("#051dba"));
                 }
-
             }
         });
 
@@ -286,41 +303,26 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public ProductType newProduct(){
         switch(productTempValue){
             case 0:
-                getToastMessage("Cannot add an empty product type");
+                showToastMessage("Cannot add an empty product type");
                 productHolder = null;
                 break;
             case 1:
                 productHolder = ProductType.Alcohol;
                 break;
             case 2:
-                productHolder = ProductType.Bread;
+                productHolder = ProductType.Vegetables;
                 break;
             case 3:
-                productHolder = ProductType.Chicken;
-                break;
-            case 4:
                 productHolder = ProductType.Dairy;
                 break;
+            case 4:
+                productHolder = ProductType.Grains;
+                break;
             case 5:
-                productHolder = ProductType.Fruit;
+                productHolder = ProductType.Fruits;
                 break;
             case 6:
-                productHolder = ProductType.Meat;
-                break;
-            case 7:
-                productHolder = ProductType.Pasta;
-                break;
-            case 8:
-                productHolder = ProductType.Potatoes;
-                break;
-            case 9:
-                productHolder = ProductType.SandwichFilling;
-                break;
-            case 10:
-                productHolder = ProductType.Snacks;
-                break;
-            case 11:
-                productHolder = ProductType.Vegetables;
+                productHolder = ProductType.Proteins;
                 break;
         }
 
@@ -330,7 +332,7 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public CategoryType newCategory(){
         switch(tempValue){
             case 0:
-                getToastMessage("Cannot add an empty category");
+                showToastMessage("Cannot add an empty category");
                 categoryHolder = null;
                 break;
             case 1:
@@ -350,11 +352,11 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     public int newImage(){
         switch(imageHolder){
             case 0:
-                getToastMessage("Cannot add an stock image");
+                showToastMessage("Cannot add an stock image");
                 newProdutImage = 0;
                 break;
             case 1:
-                newProdutImage = R.mipmap.apple;
+                newProdutImage = R.mipmap.apples;
                 break;
             case 2:
                 newProdutImage = R.mipmap.baguette;
@@ -439,6 +441,75 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
                 break;
             case 29:
                 newProdutImage = R.mipmap.yogurt;
+                break;
+            case 30:
+                newProdutImage = R.mipmap.hotdog;
+                break;
+            case 31:
+                newProdutImage = R.mipmap.avocado;
+                break;
+            case 32:
+                newProdutImage = R.mipmap.corn;
+                break;
+            case 33:
+                newProdutImage = R.mipmap.eggplant;
+                break;
+            case 34:
+                newProdutImage = R.mipmap.fish;
+                break;
+            case 35:
+                newProdutImage = R.mipmap.grape;
+                break;
+            case 36:
+                newProdutImage = R.mipmap.juice;
+                break;
+            case 37:
+                newProdutImage = R.mipmap.pear;
+                break;
+            case 38:
+                newProdutImage = R.mipmap.popcorn;
+                break;
+            case 39:
+                newProdutImage = R.mipmap.rice;
+                break;
+            case 40:
+                newProdutImage = R.mipmap.salad;
+                break;
+            case 41:
+                newProdutImage = R.mipmap.wine;
+                break;
+            case 42:
+                newProdutImage = R.mipmap.tuna;
+                break;
+            case 43:
+                newProdutImage = R.mipmap.potato;
+                break;
+            case 44:
+                newProdutImage = R.mipmap.egg;
+                break;
+            case 45:
+                newProdutImage = R.mipmap.cabbage;
+                break;
+            case 46:
+                newProdutImage = R.mipmap.carrot;
+                break;
+            case 47:
+                newProdutImage = R.mipmap.nuts;
+                break;
+            case 48:
+                newProdutImage = R.mipmap.melon;
+                break;
+            case 49:
+                newProdutImage = R.mipmap.bellpepper;
+                break;
+            case 50:
+                newProdutImage = R.mipmap.beans;
+                break;
+            case 51:
+                newProdutImage = R.mipmap.sausage;
+                break;
+            case 52:
+                newProdutImage = R.mipmap.pineapple;
                 break;
         }
         return newProdutImage;

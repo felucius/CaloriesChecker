@@ -8,25 +8,22 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +37,6 @@ import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
-import maximedelange.calorieschecker.Domain.ProductType;
 import maximedelange.calorieschecker.R;
 
 public class BreakfastScreen extends AppCompatActivity implements Serializable{
@@ -59,7 +55,8 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     private Toast toast;
     private String information = null;
     private Database database = null;
-    private int day;
+    private String day;
+    private int currentDay;
     private int totalCalories;
 
     // GUI Components
@@ -73,7 +70,6 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     // Time
     Date date = new Date();
     private Calendar calendar;
-    private DayOfTheWeek dayOfTheWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +82,14 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         databaseProducts = new ArrayList<>();
         database = new Database(this, null, null, 1);
 
-        // Check time. Store calories at 00:00 for the given day.
         calendar = GregorianCalendar.getInstance();
         System.out.println("CURRENT MONTH: " + date.getMonth());
         calendar.setTime(date);
-        //System.out.println("Day of the week: " + calendar.get(Calendar.DAY_OF_WEEK) + " hour: " + calendar.get(Calendar.HOUR) + " minute: " + calendar.get(Calendar.MINUTE));
-        day = calendar.get(Calendar.DAY_OF_WEEK);
-        totalCalories = database.readCaloriesFromDatabase(day);
+
+        currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+
+        day = database.getDateTime();
+        totalCalories = database.readCaloriesFromDatabase(day, currentDay);
 
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
@@ -144,17 +141,17 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                 tableRow.addView(image, 0, new TableRow.LayoutParams(400, 400));
 
                 textArray.setText(product.getName());
-                textCaloriesArray.setText(" Cal: " + String.valueOf(product.getCalories()));
-                textProductArray.setText(" Prod: " + String.valueOf(product.getProductType()));
+                textCaloriesArray.setText(" Cal:\n " + String.valueOf(product.getCalories()));
+                textProductArray.setText(" Prod:\n " + String.valueOf(product.getProductType()));
                 textArray.setTextSize(18);
                 textArray.setTypeface(null, Typeface.BOLD);
                 textArray.setTextColor(Color.BLACK);
                 textArray.setPadding(0, 150, 0, 100);
 
                 tableRow.setBackgroundDrawable(getResources().getDrawable(R.drawable.productimages));
-                tableRow.addView(textArray, 1, new TableRow.LayoutParams(200, 500));
-                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(200, 400));
-                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(200, 400));
+                tableRow.addView(textArray, 1, new TableRow.LayoutParams(300, 500));
+                tableRow.addView(textCaloriesArray, 2, new TableRow.LayoutParams(100, 200));
+                tableRow.addView(textProductArray, 3, new TableRow.LayoutParams(250, 200));
 
                 tableRow.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -163,7 +160,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                         background.setBackgroundColor(Color.RED);
 
                         final Dialog dialog = new Dialog(BreakfastScreen.this);
-                        dialog.setContentView(R.layout.popup);
+                        dialog.setContentView(R.layout.popup_removeproduct);
                         dialog.show();
 
                         dismisspopup = (Button)dialog.findViewById(R.id.dismissPopup);
@@ -182,7 +179,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                                 Intent intent = new Intent(v.getContext(), BreakfastScreen.class);
                                 dialog.dismiss();
                                 products = combinedProducts;
-                                database.removeFromDatabase(product);
+                                database.removeProductFromDatabase(product);
                                 products.remove(product);
                                 productController.setStaticProducts(products);
                                 productController.getStaticProducts();
@@ -261,6 +258,15 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         int duration = Toast.LENGTH_SHORT;
 
         toast = Toast.makeText(context, text, duration);
+
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        ViewGroup group = (ViewGroup) toast.getView();
+        group.setBackgroundResource(R.drawable.toastmessage);
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setTextColor(Color.RED);
+        messageTextView.setTypeface(null, Typeface.BOLD);
+        messageTextView.setTextSize(25);
+
         toast.show();
     }
 
@@ -282,7 +288,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
                 intent.putExtra("totalProducts", products);
 
                 // Add current calories to database.
-                database.addCaloriesOfDayToDatabase(calorieCounter.getCountcalories(), day);
+                database.insertCaloriesOfDayToDatabase(calorieCounter.getCountcalories(), currentDay, database.getDateTime(), "true");
                 startActivity(intent);
                 return true;
             default:

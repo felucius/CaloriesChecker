@@ -23,12 +23,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
-import maximedelange.calorieschecker.Domain.Adapter;
+import maximedelange.calorieschecker.Controllers.Adapter;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
 import maximedelange.calorieschecker.Domain.Product;
@@ -41,16 +45,16 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
     ArrayList<Product> databaseProducts = new ArrayList<>();
     private ProductController productController = null;
     private CalorieCounter calorieCounter = null;
-    private ArrayList<Product> products;
+    private ArrayList<Product> products = null;
     private int imageHolder = 0;
     private CategoryType categoryHolder = null;
     private ProductType productHolder = null;
     private int newProdutImage = 0;
-    int tempValue;
-    int productTempValue;
-    private Context context;
-    private Toast toast;
-    private Database database;
+    int tempValue = 0;
+    int productTempValue = 0;
+    private Context context = null;
+    private Toast toast = null;
+    private Database database = null;
     private int productCounter = 0;
 
     // GUI Components
@@ -83,6 +87,12 @@ public class ProductScreen extends AppCompatActivity implements Serializable{
         setContentView(R.layout.activity_product_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Loading adds in this screen
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-9602567565027598~8467791866");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         database = new Database(this, null, null, 1);
         productController = new ProductController();

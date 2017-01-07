@@ -2,11 +2,9 @@ package maximedelange.calorieschecker.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +18,9 @@ import maximedelange.calorieschecker.Domain.ProductType;
  * Created by M on 12/29/2016.
  */
 
+/*
+SQLite database that creates tables and saves data to their local devices.
+ */
 public class Database extends SQLiteOpenHelper{
 
     // Fields
@@ -67,6 +68,7 @@ public class Database extends SQLiteOpenHelper{
         System.out.println("DATABASE PATH: " + context.getDatabasePath("calorieapp.db"));
     }
 
+    // Creating tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         System.out.println(db.isOpen());
@@ -91,6 +93,7 @@ public class Database extends SQLiteOpenHelper{
         db.execSQL(create_table_calories);
     }
 
+    // If there is a new version, there is going to be an upgrade.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
@@ -98,6 +101,7 @@ public class Database extends SQLiteOpenHelper{
         onCreate(db);
     }
 
+    // Insert new calories.
     public void insertCaloriesOfDayToDatabase(int calories, int day, String dayOfMonth, String inserted){
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_CALORIES + " WHERE " + DAY_OF_THE_MONTH + "= '" + dayOfMonth + "' AND " + IS_INSERTED + "= 'true' AND " + DAY_OF_THE_WEEK + "= " + day;
@@ -130,6 +134,7 @@ public class Database extends SQLiteOpenHelper{
         db.close();
     }
 
+    // Reading calories.
     public int readCaloriesFromDatabase(String dayOfMonth, int day){
         int newTotalCalories = 0;
         SQLiteDatabase db = getWritableDatabase();
@@ -162,6 +167,7 @@ public class Database extends SQLiteOpenHelper{
         return newTotalCalories;
     }
 
+    // Gets the week information for the overview page.
     public ArrayList<DateConverter> getWeekInformation(){
         ArrayList<DateConverter> dates = new ArrayList<>();
 
@@ -186,6 +192,7 @@ public class Database extends SQLiteOpenHelper{
         return dates;
     }
 
+    // Adding a new product to the database.
     public void addProductToDatabase(Product product){
         ContentValues values = new ContentValues();
         values.put(NAME, product.getName());
@@ -199,6 +206,7 @@ public class Database extends SQLiteOpenHelper{
         db.close();
     }
 
+    // Reading the products from the database.
     public ArrayList<Product> readProductFromDatabase(){
         ArrayList<Product> products = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
@@ -228,6 +236,7 @@ public class Database extends SQLiteOpenHelper{
         return products;
     }
 
+    // Get the actual date time from the device.
     public String getDateTime(){
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
@@ -235,11 +244,13 @@ public class Database extends SQLiteOpenHelper{
         return dateFormat.format(date);
     }
 
+    // Remove all calories of current day.
     public void removeCaloriesFromDatabase(String dayOfMonth){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_CALORIES + " SET " + AMOUNT_OF_CALORIES + "= 0 " + " WHERE " + DAY_OF_THE_MONTH + "= '" + dayOfMonth + "'");
     }
 
+    // Remove specific product from database.
     public void removeProductFromDatabase(Product product){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_PRODUCTS + " WHERE " + NAME + "= '" + product.getName() + "' AND " + ID + "= " + product.getID());

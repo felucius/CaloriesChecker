@@ -25,6 +25,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +39,6 @@ import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
-import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -55,9 +58,9 @@ public class LunchScreen extends AppCompatActivity implements Serializable{
     private Toast toast = null;
     private String information = null;
     private Database database = null;
-    private String day;
-    private int currentDay;
-    private int totalCalories;
+    private String day = null;
+    private int currentDay = 0;
+    private int totalCalories = 0;
 
     // GUI Components
     private TextView textArray;

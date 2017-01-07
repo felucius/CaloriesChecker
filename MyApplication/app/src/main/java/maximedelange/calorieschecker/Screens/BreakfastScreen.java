@@ -25,6 +25,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +39,6 @@ import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.CategoryType;
-import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -51,13 +54,13 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
     private Bitmap bitmap = null;
     private Bitmap resizedbitmap = null;
     private CalorieCounter calorieCounter = null;
-    private Context context;
-    private Toast toast;
+    private Context context = null;
+    private Toast toast = null;
     private String information = null;
     private Database database = null;
-    private String day;
-    private int currentDay;
-    private int totalCalories;
+    private String day = null;
+    private int currentDay = 0;
+    private int totalCalories = 0;
 
     // GUI Components
     private TextView textArray;
@@ -78,16 +81,22 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Loading adds in this screen
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-9602567565027598~8467791866");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         combinedProducts = new ArrayList<>();
         databaseProducts = new ArrayList<>();
+        // Creating database.
         database = new Database(this, null, null, 1);
 
+        // Get time from calendar and from current day.
         calendar = GregorianCalendar.getInstance();
         System.out.println("CURRENT MONTH: " + date.getMonth());
         calendar.setTime(date);
-
         currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-
         day = database.getDateTime();
         totalCalories = database.readCaloriesFromDatabase(day, currentDay);
 
@@ -109,6 +118,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         }
     }
 
+    // Creating all products from database with an image, name, amount of calories and producttype
     public void getTableLayoutBreakfastProducts() {
         tableLayout = (TableLayout)findViewById(R.id.tableLayoutBreakfast);
 
@@ -210,12 +220,14 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         }
     }
 
+    // Change actionbar with new values
     public void changeStatusBar(int calories){
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Total calories: "+ calories);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_light)));
     }
 
+    // Getting total calories.
     public void getTotalCalories(){
         Intent intent = getIntent();
         information = intent.getStringExtra("totalCalories");
@@ -230,6 +242,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         }
     }
 
+    // Getting all the products.
     public void getTotalProducts(){
         Intent intent = getIntent();
         products = (ArrayList<Product>)intent.getSerializableExtra("totalProducts");
@@ -252,6 +265,7 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         }
     }
 
+    // Show a personal toast message.
     public void showToastMessage(String message){
         context = getApplicationContext();
         CharSequence text = message;
@@ -282,8 +296,8 @@ public class BreakfastScreen extends AppCompatActivity implements Serializable{
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_back:
+                // Sending calorie and product information.
                 Intent intent = new Intent(this.getApplicationContext(), CategoryScreen.class);
-                //calorieCounter.setCountcalories(totalCalories);
                 intent.putExtra("totalCalories", String.valueOf(calorieCounter.getCountcalories()));
                 intent.putExtra("totalProducts", products);
 

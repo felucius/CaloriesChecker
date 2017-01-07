@@ -10,4 +10,10 @@
 
     <string name="spinnerProduct">choose a product</string>
     <string name="title_activity_database_controller">DatabaseController</string>
+
+    <!--Adding addvertisement to app via AdMob (google)-->
+    <string name="calories_checker_adds">ca-app-pub-9602567565027598/3897991465</string>
+
+    <!--Testing purpose: check banner-->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

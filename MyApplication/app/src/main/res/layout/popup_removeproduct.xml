@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="1dp"
-        android:background="#ffffff">
+        android:background="#96989b">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -20,13 +20,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="#051dba"
-                android:text="Are you sure you want to remove this product?" />
-
-            <ImageView
-                android:layout_width="fill_parent"
-                android:src="@mipmap/stockimage"
-                android:layout_height="150dp" />
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:text="\nAre you sure you want to remove this product?\n\n"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/dismissPopup"
@@ -34,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
-                android:textColor="#051dba"
+                android:textColor="#ffffff"
                 android:text="Dismiss message" />
 
             <Button
@@ -43,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
-                android:textColor="#051dba"
+                android:textColor="#ffffff"
                 android:text="Remove product" />
         </LinearLayout>
     </LinearLayout>

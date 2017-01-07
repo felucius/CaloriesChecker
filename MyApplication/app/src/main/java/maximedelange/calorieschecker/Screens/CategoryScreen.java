@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
-import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -188,6 +187,8 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater2 = getMenuInflater();
+        inflater2.inflate(R.menu.information, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.credits, menu);
         return true;
@@ -208,6 +209,20 @@ public class CategoryScreen extends AppCompatActivity implements Serializable {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                    }
+                });
+
+                return true;
+            case R.id.action_information:
+                final Dialog dialog2 = new Dialog(CategoryScreen.this);
+                dialog2.setContentView(R.layout.popupappinformation);
+                dialog2.show();
+
+                dismisspopup = (Button)dialog2.findViewById(R.id.dismissPopup);
+                dismisspopup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog2.dismiss();
                     }
                 });
 

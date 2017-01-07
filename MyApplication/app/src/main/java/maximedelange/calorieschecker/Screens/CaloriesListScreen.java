@@ -33,7 +33,6 @@ import maximedelange.calorieschecker.Controllers.ProductController;
 import maximedelange.calorieschecker.Database.Database;
 import maximedelange.calorieschecker.Domain.CalorieCounter;
 import maximedelange.calorieschecker.Domain.DateConverter;
-import maximedelange.calorieschecker.Domain.DayOfTheWeek;
 import maximedelange.calorieschecker.Domain.Product;
 import maximedelange.calorieschecker.R;
 
@@ -88,7 +87,6 @@ public class CaloriesListScreen extends AppCompatActivity {
         combinedProducts = new ArrayList<>();
         databaseProducts = new ArrayList<>();
         database = new Database(this, null, null, 1);
-
         // Check time. Store calories at 00:00 for the given day.
         calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);

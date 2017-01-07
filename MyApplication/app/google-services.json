@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "29444924833",
+    "firebase_url": "https://calorieschecker.firebaseio.com",
+    "project_id": "calorieschecker",
+    "storage_bucket": "calorieschecker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29444924833:android:3e2fbd4331b63250",
+        "android_client_info": {
+          "package_name": "maximedelange.calorieschecker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29444924833-7aum55gmq4vg7rcl35hiiko30860lkk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "maximedelange.calorieschecker",
+            "certificate_hash": "1D0F8EE114745937D190E4B4A5EC41C6589DE3F5"
+          }
+        },
+        {
+          "client_id": "29444924833-raaq9umvdptprju4f39k0j5nvg7fs0jb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_pXSVoBiugcdiu1N6tJUuP7Z7Fuy4Xyk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29444924833-raaq9umvdptprju4f39k0j5nvg7fs0jb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="1dp"
-        android:background="@drawable/roundedcorners_popup"
+        android:background="#96989b"
         >
 
         <LinearLayout
@@ -22,8 +22,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="#051dba"
-                android:text="Are you sure you want to clear the \namount of calories for the current day?" />
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:text="\nAre you sure you want to clear the \namount of calories for the current day?\n\n"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/dismissPopup"
@@ -31,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
-                android:textColor="#051dba"
+                android:textColor="#ffffff"
                 android:text="Dismiss message" />
 
             <Button
@@ -40,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
-                android:textColor="#051dba"
+                android:textColor="#ffffff"
                 android:text="Remove calories" />
         </LinearLayout>
     </LinearLayout>

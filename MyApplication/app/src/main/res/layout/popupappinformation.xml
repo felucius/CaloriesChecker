@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@android:color/background_light">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="1dp"
+        android:background="#96989b"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:text="\n\nApp information\n\n"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:text="--Remove product: hold 2seconds on product --> choose 'remove product'--\n"
+                android:textAlignment="center"
+                android:textStyle="normal|bold" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:text="--Remove calories: go to overview --> choose 'clear calories'--\n"
+                android:textAlignment="center"
+                android:textStyle="normal|bold" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:text="--Calories for the next week automatic overwrites the current week, no need to manually clear it--\n"
+                android:textAlignment="center"
+                android:textStyle="normal|bold" />
+            <Button
+                android:id="@+id/dismissPopup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:text="Dismiss message" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
